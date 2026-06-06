@@ -1,0 +1,16 @@
+.planning/
+__pycache__/
+*.py[cod]
+.env
+.venv/
+venv/
+server_root/
+logs/
+*.log
+
+# Preserve curated Phase 1 evidence for report/demo screenshots.
+!demo/evidence/
+!demo/evidence/phase1/
+!demo/evidence/phase1/.gitkeep
+!demo/evidence/phase1/phase1-control-transcript.txt
+!demo/evidence/phase1/phase1-server.log

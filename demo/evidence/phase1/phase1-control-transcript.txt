@@ -1,0 +1,37 @@
+220 Hybrid FTP server ready
+ftp> USER unknown
+530 Invalid username
+ftp> PASS ********
+503 Bad sequence of commands
+ftp> LIST
+530 Not logged in
+ftp> USER student
+331 User name okay, need password
+ftp> PASS ********
+530 Login incorrect
+ftp> USER student
+331 User name okay, need password
+ftp> PASS ********
+230 User logged in
+ftp> HELP
+214-Phase 1 commands:
+214-  USER <username>
+214-  PASS <password>
+214-  HELP [command]
+214-  NOOP
+214-  QUIT
+214-Future protected commands (coming soon):
+214-  ABOR APPE CDUP CWD DELE HASH LIST MDTM MKD MODE NLST PASV PORT PWD RETR RMD RNFR RNTO SIZE STAT STOR STOU TYPE
+214 End of help
+ftp> HELP USER
+214-USER <username> - begin login with the demo account username.
+214 End of help
+ftp> NOOP
+200 NOOP ok
+ftp> BOGUS
+500 Unknown command
+ftp> LIST
+502 Command not implemented yet
+ftp> QUIT
+221 Goodbye
+Phase 1 demo complete
