@@ -163,6 +163,8 @@ class TCPSmokeTests(unittest.TestCase):
                         self.assertTrue(recv_reply(sock).startswith(expected))
                     sock.sendall(b"STOR aborted.bin\r\n")
                     self.assertTrue(recv_reply(sock).startswith("150"))
+                    sock.sendall(b"PASV\r\n")
+                    self.assertEqual(recv_reply(sock), "450 A transfer is already in progress\r\n")
                     sock.sendall(b"ABOR\r\n")
                     replies = [recv_reply(sock), recv_reply(sock)]
                     self.assertIn("226 Abort successful\r\n", replies)
