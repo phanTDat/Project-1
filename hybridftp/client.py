@@ -1,4 +1,4 @@
-"""Hybrid FTP Phase 1 TCP control client."""
+"""Interactive TCP-control / reliable-UDP Hybrid FTP client."""
 
 from __future__ import annotations
 
@@ -8,7 +8,10 @@ import sys
 from pathlib import Path
 from typing import TextIO
 
+from .data_channel import parse_passive_reply
+from .integrity import HashComparison, sha256_path
 from .replies import CRLF
+from .transfer import TransferError, receive_file, send_file
 
 PROMPT = "ftp> "
 LOCAL_NOT_CONNECTED = "530 Not connected; use open <host> <port>"
@@ -24,9 +27,7 @@ def _write(line: str, transcript: TextIO | None) -> None:
 
 def _redacted_echo(command: str) -> str:
     parts = command.strip().split(maxsplit=1)
-    if parts and parts[0].upper() == "PASS":
-        return "PASS ********"
-    return command.strip()
+    return "PASS ********" if parts and parts[0].upper() == "PASS" else command.strip()
 
 
 def _read_line(sock: socket.socket) -> str:
@@ -58,33 +59,132 @@ def _read_reply(sock: socket.socket, transcript: TextIO | None) -> list[str]:
     return lines
 
 
-def _send_command(sock: socket.socket, command: str, transcript: TextIO | None) -> list[str]:
+def _send_raw(sock: socket.socket, command: str, transcript: TextIO | None) -> None:
     _write(PROMPT + _redacted_echo(command), transcript)
     sock.sendall((command.rstrip("\r\n") + CRLF).encode("utf-8"))
+
+
+def _send_command(sock: socket.socket, command: str, transcript: TextIO | None) -> list[str]:
+    _send_raw(sock, command, transcript)
     return _read_reply(sock, transcript)
 
 
-def connect_and_run(host: str, port: int, commands: list[str] | None = None, transcript: TextIO | None = None) -> int:
-    """Connect immediately, print raw replies, and optionally run scripted commands."""
+def _reply_code(reply: list[str]) -> int | None:
+    try:
+        return int(reply[0][:3]) if reply else None
+    except ValueError:
+        return None
 
+
+def _transfer_id(reply: list[str]) -> int:
+    for line in reply:
+        marker = "transfer_id="
+        if marker in line:
+            return int(line.split(marker, 1)[1].split()[0])
+    raise TransferError("server did not provide transfer_id in 150 reply")
+
+
+def _passive_endpoint(sock: socket.socket, transcript: TextIO | None):
+    reply = _send_command(sock, "PASV", transcript)
+    if _reply_code(reply) != 227:
+        raise TransferError("PASV was rejected")
+    return parse_passive_reply(reply[-1])
+
+
+def _display_hash_check(sock: socket.socket, remote: str, local: Path, transcript: TextIO | None) -> None:
+    reply = _send_command(sock, f"HASH {remote}", transcript)
+    if _reply_code(reply) != 213:
+        return
+    comparison = HashComparison(sha256_path(local), reply[-1][4:].strip())
+    _write(f"SHA-256 local={comparison.local} server={comparison.remote} match={comparison.matches}", transcript)
+
+
+def _put(sock: socket.socket, local: Path, remote: str, command: str, transcript: TextIO | None) -> None:
+    if not local.is_file():
+        _write("550 Local source is not a regular file", transcript)
+        return
+    try:
+        endpoint = _passive_endpoint(sock, transcript)
+        _send_raw(sock, f"{command} {remote}".rstrip(), transcript)
+        preliminary = _read_reply(sock, transcript)
+        if _reply_code(preliminary) != 150:
+            return
+        transfer_id = _transfer_id(preliminary)
+        with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as udp:
+            result = send_file(udp, (endpoint.host, endpoint.port), local, transfer_id)
+        _write(f"UDP upload bytes={result.bytes_transferred} sha256={result.sha256}", transcript)
+        final = _read_reply(sock, transcript)
+        if _reply_code(final) == 226:
+            _display_hash_check(sock, remote, local, transcript)
+    except (OSError, TransferError, ValueError) as exc:
+        _write(f"426 Local transfer failed: {exc}", transcript)
+
+
+def _get(sock: socket.socket, remote: str, local: Path, transcript: TextIO | None) -> None:
+    try:
+        endpoint = _passive_endpoint(sock, transcript)
+        _send_raw(sock, f"RETR {remote}", transcript)
+        preliminary = _read_reply(sock, transcript)
+        if _reply_code(preliminary) != 150:
+            return
+        transfer_id = _transfer_id(preliminary)
+        with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as udp:
+            udp.bind(("127.0.0.1", 0))
+            result = receive_file(udp, (endpoint.host, endpoint.port), local, transfer_id, send_ready=True)
+        _write(f"UDP download bytes={result.bytes_transferred} sha256={result.sha256}", transcript)
+        final = _read_reply(sock, transcript)
+        if _reply_code(final) == 226:
+            _display_hash_check(sock, remote, local, transcript)
+    except (OSError, TransferError, ValueError) as exc:
+        _write(f"426 Local transfer failed: {exc}", transcript)
+
+
+def _local_transfer(sock: socket.socket, command: str, transcript: TextIO | None) -> bool:
+    """Run human-friendly local aliases; return whether ``command`` was handled."""
+
+    parts = command.split()
+    if not parts:
+        return True
+    verb = parts[0].lower()
+    if verb == "put" and len(parts) in {2, 3}:
+        local = Path(parts[1])
+        _put(sock, local, parts[2] if len(parts) == 3 else local.name, "STOR", transcript)
+        return True
+    if verb == "append" and len(parts) == 3:
+        _put(sock, Path(parts[1]), parts[2], "APPE", transcript)
+        return True
+    if verb == "put-unique" and len(parts) in {2, 3}:
+        local = Path(parts[1])
+        _put(sock, local, parts[2] if len(parts) == 3 else local.name, "STOU", transcript)
+        return True
+    if verb == "get" and len(parts) in {2, 3}:
+        remote = parts[1]
+        local = Path(parts[2]) if len(parts) == 3 else Path(Path(remote).name)
+        _get(sock, remote, local, transcript)
+        return True
+    return False
+
+
+def _run_connected(sock: socket.socket, commands: list[str] | None, transcript: TextIO | None) -> None:
+    _read_reply(sock, transcript)
+    iterator = iter(commands or [])
+    while True:
+        try:
+            command = next(iterator) if commands is not None else input(PROMPT)
+        except (EOFError, StopIteration):
+            break
+        if not command:
+            continue
+        if _local_transfer(sock, command, transcript):
+            continue
+        replies = _send_command(sock, command, transcript)
+        if command.strip().upper() == "QUIT" or not replies:
+            break
+
+
+def connect_and_run(host: str, port: int, commands: list[str] | None = None, transcript: TextIO | None = None) -> int:
     with socket.create_connection((host, port), timeout=5.0) as sock:
-        _read_reply(sock, transcript)
-        if commands is None:
-            while True:
-                try:
-                    command = input(PROMPT)
-                except EOFError:
-                    break
-                if not command:
-                    continue
-                replies = _send_command(sock, command, transcript)
-                if command.strip().upper() == "QUIT" or not replies:
-                    break
-        else:
-            for command in commands:
-                replies = _send_command(sock, command, transcript)
-                if command.strip().upper() == "QUIT" or not replies:
-                    break
+        _run_connected(sock, commands, transcript)
     return 0
 
 
@@ -92,54 +192,33 @@ def _parse_open(command: str, default_host: str, default_port: int) -> tuple[str
     parts = command.split()
     if not parts or parts[0].lower() != "open" or len(parts) > 3:
         return None
-    host = parts[1] if len(parts) >= 2 else default_host
-    if len(parts) == 3:
-        try:
-            port = int(parts[2])
-        except ValueError:
-            return None
-    else:
-        port = default_port
-    return host, port
+    try:
+        return parts[1] if len(parts) >= 2 else default_host, int(parts[2]) if len(parts) == 3 else default_port
+    except ValueError:
+        return None
 
 
-def open_style_run(
-    default_host: str = "127.0.0.1",
-    default_port: int = 2121,
-    commands: list[str] | None = None,
-    transcript: TextIO | None = None,
-) -> int:
-    """Run an FTP-like disconnected shell with local open support."""
-
+def open_style_run(default_host: str = "127.0.0.1", default_port: int = 2121, commands: list[str] | None = None, transcript: TextIO | None = None) -> int:
     sock: socket.socket | None = None
-    scripted = commands is not None
     iterator = iter(commands or [])
     try:
         while True:
-            if scripted:
-                try:
-                    command = next(iterator)
-                except StopIteration:
-                    break
-            else:
-                try:
-                    command = input(PROMPT)
-                except EOFError:
-                    break
+            try:
+                command = next(iterator) if commands is not None else input(PROMPT)
+            except (EOFError, StopIteration):
+                break
             if not command:
                 continue
             if sock is None:
                 _write(PROMPT + _redacted_echo(command), transcript)
-                if command.strip().lower().startswith("open"):
-                    parsed = _parse_open(command, default_host, default_port)
-                    if parsed is None:
-                        _write(LOCAL_SYNTAX, transcript)
-                        continue
-                    host, port = parsed
-                    sock = socket.create_connection((host, port), timeout=5.0)
-                    _read_reply(sock, transcript)
-                else:
-                    _write(LOCAL_NOT_CONNECTED, transcript)
+                parsed = _parse_open(command, default_host, default_port) if command.strip().lower().startswith("open") else None
+                if parsed is None:
+                    _write(LOCAL_SYNTAX if command.strip().lower().startswith("open") else LOCAL_NOT_CONNECTED, transcript)
+                    continue
+                sock = socket.create_connection(parsed, timeout=5.0)
+                _read_reply(sock, transcript)
+                continue
+            if _local_transfer(sock, command, transcript):
                 continue
             replies = _send_command(sock, command, transcript)
             if command.strip().upper() == "QUIT" or not replies:
@@ -151,22 +230,18 @@ def open_style_run(
 
 
 def _commands_from_arg(value: str | None) -> list[str] | None:
-    if value is None:
-        return None
-    return [part.strip() for part in value.split(";") if part.strip()]
+    return [part.strip() for part in value.split(";") if part.strip()] if value is not None else None
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="Hybrid FTP TCP control client")
+    parser = argparse.ArgumentParser(description="Hybrid FTP TCP-control / reliable-UDP client")
     parser.add_argument("host", nargs="?", default="127.0.0.1")
     parser.add_argument("port", nargs="?", type=int, default=2121)
-    parser.add_argument("--commands", help="semicolon-separated command list for scripted runs")
+    parser.add_argument("--commands", help="semicolon-separated commands; use put/get aliases for local files")
     parser.add_argument("--no-connect", action="store_true", help="start disconnected and use open <host> <port>")
     args = parser.parse_args(argv)
     commands = _commands_from_arg(args.commands)
-    if args.no_connect:
-        return open_style_run(args.host, args.port, commands=commands)
-    return connect_and_run(args.host, args.port, commands=commands)
+    return open_style_run(args.host, args.port, commands, None) if args.no_connect else connect_and_run(args.host, args.port, commands, None)
 
 
 if __name__ == "__main__":

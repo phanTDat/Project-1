@@ -1,102 +1,132 @@
 # Hybrid FTP Application
 
-Hybrid FTP is a CS494 socket-programming project that separates the FTP-style control plane from the data plane. Phase 1 implements the TCP control MVP: server/client startup, `220` greeting, FTP-style replies, `USER`/`PASS` login, `HELP`, `NOOP`, `QUIT`, protected command gating, logs, tests, and demo evidence.
+A Python standard-library Hybrid FTP client/server for CS494 Internetworking
+Protocols. It uses **TCP only for control** (commands, replies, authentication,
+and session state) and a **custom reliable UDP protocol for every file payload**.
 
-## Constraints
+## Excellent-level capabilities
 
-- Python standard library only.
-- TCP is control-only for commands, replies, authentication, and session state.
-- UDP file payload transfer is deferred to later phases and must not be sent over TCP.
-- Do not use `ftplib`, `pyftpdlib`, KCP, QUIC, libcurl FTP wrappers, or third-party transfer libraries.
+- FTP-style TCP control channel, authentication, standard three-digit replies,
+  safe server-root filesystem commands, and password-redacted logs.
+- Per-session UDP active/passive data mode (`PASV` / `PORT`).
+- Custom 32-byte RDT header with transfer ID, sequence/ACK numbers, receive
+  window, payload length, flags, and CRC-32 validation.
+- Selective-repeat-style retransmission, duplicate suppression, out-of-order
+  buffering, bounded sliding window, FIN/FIN_ACK completion, and abort cleanup.
+- Byte-preserving text and binary transfer with temporary receive files and
+  atomic final rename only after UDP completion.
+- `RETR`, `STOR`, `STOU`, `APPE`, `HASH`, `TYPE`, and `MODE S`; `ABOR` safely resets an idle prepared data channel.
+- Streaming SHA-256 comparisons, concurrent TCP sessions, and a visible
+  active-session table through `STAT`.
 
-## Demo Credentials
+## Requirements
 
-Phase 1 includes demo-only credentials for local testing, not production security:
+- Python 3.14+ (standard library only)
+- No dependency installation is required.
 
-- Username: `student`
-- Password: `cs494`
-
-## Start the Server
-
-```powershell
-python -m hybridftp.server --host 127.0.0.1 --port 2121 --root ./server_root
-```
-
-Top-level wrapper alternative:
-
-```powershell
-python server.py --host 127.0.0.1 --port 2121 --root ./server_root
-```
-
-The server creates `./server_root`, logs its absolute path, listens on TCP, and sends `220 Hybrid FTP server ready` when a client connects.
-
-## Immediate Client Mode
-
-```powershell
-python -m hybridftp.client 127.0.0.1 2121
-```
-
-Top-level wrapper alternative:
-
-```powershell
-python client.py 127.0.0.1 2121
-```
-
-The client connects immediately and prints raw FTP-style replies before the `ftp> ` prompt accepts commands.
-
-## Open-Style Client Mode
-
-```powershell
-python -m hybridftp.client --no-connect
-```
-
-At the `ftp> ` prompt:
+Demo credentials are deliberately local-only:
 
 ```text
-open 127.0.0.1 2121
+username: student
+password: cs494
 ```
 
-Before `open`, normal FTP commands receive a local `530 Not connected; use open <host> <port>` message. After `open`, all FTP commands are sent over the TCP control channel.
+## Start the server
 
-## Phase 1 Command Walkthrough
+```powershell
+py -3 -m hybridftp.server --host 127.0.0.1 --port 2121 --root ./server_root --log-file ./logs/server.log
+```
+
+or:
+
+```powershell
+py -3 server.py --host 127.0.0.1 --port 2121 --root ./server_root
+```
+
+## Start the client
+
+```powershell
+py -3 -m hybridftp.client 127.0.0.1 2121
+# Wrapper alternative: py -3 client.py 127.0.0.1 2121
+```
+
+To begin disconnected and issue `open 127.0.0.1 2121` from the FTP prompt:
+
+```powershell
+py -3 -m hybridftp.client --no-connect
+```
+
+The client accepts standard control commands and these local convenience aliases:
 
 ```text
-USER unknown
-PASS anything
-LIST
-USER student
-PASS wrong
+put <local-file> [remote-file]        # PASV + STOR through reliable UDP
+get <remote-file> [local-file]        # PASV + RETR through reliable UDP
+append <local-file> <remote-file>     # PASV + APPE through reliable UDP
+put-unique <local-file> [remote-name] # PASV + STOU through reliable UDP
+```
+
+A minimal binary-safe upload/download sequence:
+
+```text
 USER student
 PASS cs494
-HELP
-HELP USER
-NOOP
-BOGUS
-LIST
+TYPE I
+MODE S
+put .\fixture.bin fixture.bin
+get fixture.bin downloaded.bin
+HASH fixture.bin
+STAT
 QUIT
 ```
 
-Expected behavior includes `530 Invalid username`, `503 Bad sequence of commands`, pre-login `530 Not logged in`, `331 User name okay, need password`, `530 Login incorrect`, `230 User logged in`, multiline `214` help, `200 NOOP ok`, `500 Unknown command`, authenticated placeholder `502 Command not implemented yet`, and `221 Goodbye`.
+The client prints SHA-256 local/server comparison after a successful alias
+transfer. `TYPE A` and `TYPE I` record the requested FTP type; both preserve
+raw bytes so no unsafe newline conversion corrupts binary files. `MODE B` and
+`MODE C` receive a clear `504` unsupported response.
 
-## Run Tests
+## Active mode
+
+For a defense demonstration, bind a UDP client endpoint and issue a standard
+`PORT h1,h2,h3,h4,p1,p2` command before `STOR` or `RETR`. The server accepts
+only an endpoint matching the TCP peer (loopback aliases are accepted locally).
+Passive mode is the default behind the local `put` and `get` aliases.
+
+## Tests
 
 ```powershell
-python -m unittest discover -s tests -v
+py -3 -m unittest discover -s tests -v
 ```
 
-## Generate Phase 1 Evidence
+Tests cover parsing, filesystem sandboxing, packet encoding/CRC, binary RDT
+transfer, FTP command behavior, passive TCP+UDP transfer, and concurrent session
+isolation.
+
+## Generate evidence
+
+Historical TCP-control evidence can be regenerated with:
 
 ```powershell
-python demo/phase1_control_demo.py
+py -3 demo/phase1_control_demo.py
 ```
 
-The script overwrites stable evidence files under `demo/evidence/phase1/`:
+Generate final submission evidence with:
 
-- `phase1-control-transcript.txt`
-- `phase1-server.log`
+```powershell
+py -3 demo/final_submission_demo.py
+```
 
-Passwords are redacted in client transcript echoes and server logs.
+This produces curated, password/path-redacted output under
+`demo/evidence/final/`. See `docs/technical-report.md` for the report sections,
+packet diagram, workflow diagrams, assignment matrix, and evidence map.
 
-## Later Phases
+## Oral-defense map
 
-Phase 1 deliberately does not implement UDP payload transfer, real filesystem commands, active/passive modes, reliable UDP, binary transfer, hashes, or concurrency evidence. Those capabilities are planned in later phases.
+| Question | Primary source |
+|---|---|
+| TCP command parsing/replies | `hybridftp/commands.py`, `hybridftp/replies.py` |
+| Server-root sandbox | `hybridftp/filesystem.py`, `hybridftp/path_utils.py` |
+| UDP header/CRC/flags | `hybridftp/rdt.py` |
+| Window, ACK, retransmission, reorder | `hybridftp/transfer.py` |
+| PASV/PORT validation | `hybridftp/data_channel.py` |
+| Session isolation/concurrency | `hybridftp/session.py`, `hybridftp/session_registry.py`, `hybridftp/server.py` |
+| Client transfer and hashes | `hybridftp/client.py`, `hybridftp/integrity.py` |

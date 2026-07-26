@@ -1,4 +1,5 @@
 import logging
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -18,7 +19,11 @@ class ListHandler(logging.Handler):
 
 class ServerProtocolTests(unittest.TestCase):
     def make_session(self):
-        return Session(session_id=1, client_address=("127.0.0.1", 9999), server_root=Path.cwd().resolve())
+        tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(tmp.cleanup)
+        root = Path(tmp.name) / "server_root"
+        root.mkdir()
+        return Session(session_id=1, client_address=("127.0.0.1", 9999), server_root=root.resolve())
 
     def make_logger(self):
         logger = logging.getLogger(f"test.hybridftp.{id(self)}")
@@ -66,7 +71,13 @@ class ServerProtocolTests(unittest.TestCase):
         reply, _ = handle_command(preauth, Command("LIST", ""), logger)
         self.assertEqual(reply.code, 530)
         reply, _ = handle_command(session, Command("LIST", ""), logger)
-        self.assertEqual(reply.code, 502)
+        self.assertEqual(reply.code, 212)
+        reply, _ = handle_command(session, Command("RETR", "file.txt"), logger)
+        self.assertEqual(reply.code, 550)
+        reply, _ = handle_command(session, Command("TYPE", "I"), logger)
+        self.assertEqual(reply.code, 200)
+        reply, _ = handle_command(session, Command("MODE", "B"), logger)
+        self.assertEqual(reply.code, 504)
 
     def test_noop_quit_unknown_and_password_logs(self):
         session = self.make_session()

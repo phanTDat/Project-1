@@ -1,0 +1,453 @@
+test_accepts_lf_and_preserves_topic (test_commands.CommandParsingTests.test_accepts_lf_and_preserves_topic) ... ok
+test_help_user_text (test_commands.CommandParsingTests.test_help_user_text) ... ok
+test_protected_placeholder_membership (test_commands.CommandParsingTests.test_protected_placeholder_membership) ... ok
+test_rejects_overlong_line (test_commands.CommandParsingTests.test_rejects_overlong_line) ... ok
+test_rejects_undecodable_bytes (test_commands.CommandParsingTests.test_rejects_undecodable_bytes) ... ok
+test_uppercases_verb_and_preserves_argument (test_commands.CommandParsingTests.test_uppercases_verb_and_preserves_argument) ... ok
+test_two_clients_have_isolated_working_directories_and_visible_table (test_concurrency.ConcurrencyTests.test_two_clients_have_isolated_working_directories_and_visible_table) ... 2026-07-26 21:18:55,957 [INFO] server root=C:\Users\Administrator\AppData\Local\Temp\tmp6n770onv\server
+2026-07-26 21:18:55,957 [INFO] listening host=127.0.0.1 port=64317
+2026-07-26 21:18:55,959 [INFO] session=1 client=127.0.0.1:64318 state=connected connect
+2026-07-26 21:18:55,959 [INFO] session=2 client=127.0.0.1:64319 state=connected connect
+2026-07-26 21:18:55,959 [INFO] session=1 client=127.0.0.1:64318 state=connected command=USER student
+2026-07-26 21:18:55,960 [INFO] session=1 client=127.0.0.1:64318 state=pending user reply=331 User name okay, need password
+2026-07-26 21:18:55,960 [INFO] session=1 client=127.0.0.1:64318 state=pending user command=PASS ********
+2026-07-26 21:18:55,960 [INFO] session=1 client=127.0.0.1:64318 state=authenticated authenticated username=student
+2026-07-26 21:18:55,960 [INFO] session=1 client=127.0.0.1:64318 state=authenticated reply=230 User logged in
+2026-07-26 21:18:55,960 [INFO] session=2 client=127.0.0.1:64319 state=connected command=USER student
+2026-07-26 21:18:55,960 [INFO] session=2 client=127.0.0.1:64319 state=pending user reply=331 User name okay, need password
+2026-07-26 21:18:55,960 [INFO] session=2 client=127.0.0.1:64319 state=pending user command=PASS ********
+2026-07-26 21:18:55,960 [INFO] session=2 client=127.0.0.1:64319 state=authenticated authenticated username=student
+2026-07-26 21:18:55,960 [INFO] session=2 client=127.0.0.1:64319 state=authenticated reply=230 User logged in
+2026-07-26 21:18:55,960 [INFO] session=1 client=127.0.0.1:64318 state=authenticated command=CWD one
+2026-07-26 21:18:55,961 [INFO] session=1 client=127.0.0.1:64318 state=authenticated fs command=CWD virtual=/one
+2026-07-26 21:18:55,961 [INFO] session=1 client=127.0.0.1:64318 state=authenticated reply=250 Directory changed to "/one"
+2026-07-26 21:18:55,961 [INFO] session=2 client=127.0.0.1:64319 state=authenticated command=CWD two
+2026-07-26 21:18:55,962 [INFO] session=2 client=127.0.0.1:64319 state=authenticated fs command=CWD virtual=/two
+2026-07-26 21:18:55,962 [INFO] session=2 client=127.0.0.1:64319 state=authenticated reply=250 Directory changed to "/two"
+2026-07-26 21:18:55,962 [INFO] session=1 client=127.0.0.1:64318 state=authenticated command=STAT
+2026-07-26 21:18:55,962 [INFO] session=1 client=127.0.0.1:64318 state=authenticated fs command=STAT virtual=/one
+2026-07-26 21:18:55,962 [INFO] session=1 client=127.0.0.1:64318 state=authenticated reply=212 End
+2026-07-26 21:18:55,963 [INFO] session=1 client=127.0.0.1:64318 state=authenticated command=QUIT
+2026-07-26 21:18:55,963 [INFO] session=1 client=127.0.0.1:64318 state=quit reply=221 Goodbye
+2026-07-26 21:18:55,963 [INFO] session=2 client=127.0.0.1:64319 state=authenticated command=QUIT
+2026-07-26 21:18:55,963 [INFO] session=2 client=127.0.0.1:64319 state=quit reply=221 Goodbye
+2026-07-26 21:18:55,964 [INFO] session=3 client=127.0.0.1:64320 state=connected connect
+2026-07-26 21:18:55,976 [INFO] session=3 client=127.0.0.1:64320 state=connected disconnect without QUIT
+2026-07-26 21:18:55,976 [INFO] shutdown complete
+ok
+test_bad_or_unsafe_endpoints_are_rejected (test_data_channel.DataChannelTests.test_bad_or_unsafe_endpoints_are_rejected) ... ok
+test_port_round_trip_and_peer_guard (test_data_channel.DataChannelTests.test_port_round_trip_and_peer_guard) ... ok
+test_listing_and_metadata_format (test_filesystem.FilesystemHelperTests.test_listing_and_metadata_format) ... ok
+test_navigation_and_mutation_safety (test_filesystem.FilesystemHelperTests.test_navigation_and_mutation_safety) ... ok
+test_rename_validation_and_state_clearing (test_filesystem.FilesystemHelperTests.test_rename_validation_and_state_clearing) ... ok
+test_rmd_rejects_cwd_and_parent (test_filesystem.FilesystemHelperTests.test_rmd_rejects_cwd_and_parent) ... ok
+test_virtual_resolution_and_rejections (test_filesystem.FilesystemHelperTests.test_virtual_resolution_and_rejections) ... ok
+test_final_evidence_has_transfer_hash_and_session_output (test_final_artifacts.FinalArtifactTests.test_final_evidence_has_transfer_hash_and_session_output) ... ok
+test_report_covers_all_mandatory_sections (test_final_artifacts.FinalArtifactTests.test_report_covers_all_mandatory_sections) ... ok
+test_comparison_reports_match_state (test_integrity.IntegrityTests.test_comparison_reports_match_state) ... ok
+test_stream_and_path_hash_binary_bytes (test_integrity.IntegrityTests.test_stream_and_path_hash_binary_bytes) ... ok
+test_ensure_within_root_accepts_child (test_path_utils.PathUtilsTests.test_ensure_within_root_accepts_child) ... ok
+test_ensure_within_root_rejects_traversal (test_path_utils.PathUtilsTests.test_ensure_within_root_rejects_traversal) ... ok
+test_resolve_server_root_creates_missing_root (test_path_utils.PathUtilsTests.test_resolve_server_root_creates_missing_root) ... ok
+test_curated_phase1_evidence_is_present_and_redacted (test_phase1_artifacts.Phase1ArtifactTests.test_curated_phase1_evidence_is_present_and_redacted) ... ok
+test_phase1_source_avoids_banned_ftp_transfer_libraries (test_phase1_artifacts.Phase1ArtifactTests.test_phase1_source_avoids_banned_ftp_transfer_libraries) ... ok
+test_readme_and_genai_log_cover_phase1_handoff_requirements (test_phase1_artifacts.Phase1ArtifactTests.test_readme_and_genai_log_cover_phase1_handoff_requirements) ... ok
+test_curated_phase2_evidence_is_present_redacted_and_complete (test_phase2_artifacts.Phase2ArtifactTests.test_curated_phase2_evidence_is_present_redacted_and_complete) ... ok
+test_phase2_evidence_remains_a_filesystem_slice (test_phase2_artifacts.Phase2ArtifactTests.test_phase2_evidence_remains_a_filesystem_slice) ... ok
+test_ack_and_fin_packets_are_valid_control_packets (test_rdt.RDTPacketTests.test_ack_and_fin_packets_are_valid_control_packets) ... ok
+test_checksum_and_length_tampering_are_rejected (test_rdt.RDTPacketTests.test_checksum_and_length_tampering_are_rejected) ... ok
+test_data_round_trip_preserves_all_header_fields (test_rdt.RDTPacketTests.test_data_round_trip_preserves_all_header_fields) ... ok
+test_default_window_is_explicit (test_rdt.RDTPacketTests.test_default_window_is_explicit) ... ok
+test_invalid_packets_are_rejected (test_rdt.RDTPacketTests.test_invalid_packets_are_rejected) ... ok
+test_multiline_reply_uses_ftp_framing (test_replies.ReplyFormattingTests.test_multiline_reply_uses_ftp_framing) ... ok
+test_single_reply_uses_crlf (test_replies.ReplyFormattingTests.test_single_reply_uses_crlf) ... ok
+test_auth_flow_and_placeholders (test_server_protocol.ServerProtocolTests.test_auth_flow_and_placeholders) ... ok
+test_noop_quit_unknown_and_password_logs (test_server_protocol.ServerProtocolTests.test_noop_quit_unknown_and_password_logs) ... ok
+test_sanitize_pass (test_server_protocol.ServerProtocolTests.test_sanitize_pass) ... ok
+test_cli_help_entrypoints_expose_phase1_options (test_tcp_smoke.TCPSmokeTests.test_cli_help_entrypoints_expose_phase1_options) ... ok
+test_ctrl_c_shutdown_is_logged_before_handler_cleanup (test_tcp_smoke.TCPSmokeTests.test_ctrl_c_shutdown_is_logged_before_handler_cleanup) ... 2026-07-26 21:18:56,568 [INFO] server root=C:\Users\Administrator\AppData\Local\Temp\tmpp9lktele\server_root
+2026-07-26 21:18:56,568 [INFO] listening host=127.0.0.1 port=2121
+2026-07-26 21:18:56,568 [INFO] graceful shutdown requested by Ctrl+C
+2026-07-26 21:18:56,568 [INFO] shutdown complete
+ok
+test_filesystem_navigation_listing_metadata_and_mutations (test_tcp_smoke.TCPSmokeTests.test_filesystem_navigation_listing_metadata_and_mutations) ... 2026-07-26 21:18:56,570 [INFO] server root=C:\Users\Administrator\AppData\Local\Temp\tmp_5zjthwy\server_root
+2026-07-26 21:18:56,570 [INFO] listening host=127.0.0.1 port=64328
+2026-07-26 21:18:56,572 [INFO] session=1 client=127.0.0.1:64329 state=connected connect
+220 Hybrid FTP server ready
+ftp> USER student
+2026-07-26 21:18:56,572 [INFO] session=1 client=127.0.0.1:64329 state=connected command=USER student
+2026-07-26 21:18:56,572 [INFO] session=1 client=127.0.0.1:64329 state=pending user reply=331 User name okay, need password
+331 User name okay, need password
+ftp> PASS ********
+2026-07-26 21:18:56,572 [INFO] session=1 client=127.0.0.1:64329 state=pending user command=PASS ********
+2026-07-26 21:18:56,572 [INFO] session=1 client=127.0.0.1:64329 state=authenticated authenticated username=student
+2026-07-26 21:18:56,572 [INFO] session=1 client=127.0.0.1:64329 state=authenticated reply=230 User logged in
+230 User logged in
+ftp> PWD
+2026-07-26 21:18:56,572 [INFO] session=1 client=127.0.0.1:64329 state=authenticated command=PWD
+2026-07-26 21:18:56,572 [INFO] session=1 client=127.0.0.1:64329 state=authenticated fs command=PWD virtual=/
+2026-07-26 21:18:56,573 [INFO] session=1 client=127.0.0.1:64329 state=authenticated reply=257 "/" is current directory
+257 "/" is current directory
+ftp> CWD docs
+2026-07-26 21:18:56,573 [INFO] session=1 client=127.0.0.1:64329 state=authenticated command=CWD docs
+2026-07-26 21:18:56,573 [INFO] session=1 client=127.0.0.1:64329 state=authenticated fs command=CWD virtual=/docs
+2026-07-26 21:18:56,573 [INFO] session=1 client=127.0.0.1:64329 state=authenticated reply=250 Directory changed to "/docs"
+250 Directory changed to "/docs"
+ftp> PWD
+2026-07-26 21:18:56,574 [INFO] session=1 client=127.0.0.1:64329 state=authenticated command=PWD
+2026-07-26 21:18:56,574 [INFO] session=1 client=127.0.0.1:64329 state=authenticated fs command=PWD virtual=/docs
+2026-07-26 21:18:56,574 [INFO] session=1 client=127.0.0.1:64329 state=authenticated reply=257 "/docs" is current directory
+257 "/docs" is current directory
+ftp> CDUP
+2026-07-26 21:18:56,574 [INFO] session=1 client=127.0.0.1:64329 state=authenticated command=CDUP
+2026-07-26 21:18:56,574 [INFO] session=1 client=127.0.0.1:64329 state=authenticated fs command=CDUP virtual=/
+2026-07-26 21:18:56,574 [INFO] session=1 client=127.0.0.1:64329 state=authenticated reply=250 Directory changed to "/"
+250 Directory changed to "/"
+ftp> PWD
+2026-07-26 21:18:56,574 [INFO] session=1 client=127.0.0.1:64329 state=authenticated command=PWD
+2026-07-26 21:18:56,574 [INFO] session=1 client=127.0.0.1:64329 state=authenticated fs command=PWD virtual=/
+2026-07-26 21:18:56,574 [INFO] session=1 client=127.0.0.1:64329 state=authenticated reply=257 "/" is current directory
+257 "/" is current directory
+ftp> LIST /
+2026-07-26 21:18:56,575 [INFO] session=1 client=127.0.0.1:64329 state=authenticated command=LIST /
+2026-07-26 21:18:56,575 [INFO] session=1 client=127.0.0.1:64329 state=authenticated fs command=LIST virtual=/
+2026-07-26 21:18:56,576 [INFO] session=1 client=127.0.0.1:64329 state=authenticated reply=212 End
+212-dir entries=1 mtime=20260726141856 path=/docs name=docs
+212-dir entries=0 mtime=20260726141856 path=/empty name=empty
+212-dir entries=1 mtime=20260726141856 path=/nested name=nested
+212-file size=6 mtime=20260726141856 path=/delete-me.txt name=delete-me.txt
+212-file size=5 mtime=20260726141856 path=/name with space.txt name=name with space.txt
+212-file size=3 mtime=20260726141856 path=/old.txt name=old.txt
+212 End
+ftp> NLST /
+2026-07-26 21:18:56,576 [INFO] session=1 client=127.0.0.1:64329 state=authenticated command=NLST /
+2026-07-26 21:18:56,577 [INFO] session=1 client=127.0.0.1:64329 state=authenticated fs command=NLST virtual=/
+2026-07-26 21:18:56,577 [INFO] session=1 client=127.0.0.1:64329 state=authenticated reply=212 End
+212-docs
+212-empty
+212-nested
+212-delete-me.txt
+212-name with space.txt
+212-old.txt
+212 End
+ftp> STAT
+2026-07-26 21:18:56,577 [INFO] session=1 client=127.0.0.1:64329 state=authenticated command=STAT
+2026-07-26 21:18:56,577 [INFO] session=1 client=127.0.0.1:64329 state=authenticated fs command=STAT virtual=/
+2026-07-26 21:18:56,577 [INFO] session=1 client=127.0.0.1:64329 state=authenticated reply=212 End
+212-user=student state=authenticated
+212-cwd=/ root=/
+212-implemented=PWD CWD CDUP LIST NLST STAT SIZE MDTM MKD RMD DELE RNFR RNTO TYPE MODE PASV PORT RETR STOR STOU APPE ABOR HASH
+212-type=I mode=S data_mode=NONE endpoint=none
+212-transfer=id=none direction=idle bytes=0
+212-pending_rename=none
+212-active_sessions=1
+212-session=1 client=127.0.0.1:64329 auth=True cwd=/ data_mode=NONE endpoint=none transfer=idle bytes=0
+212 End
+ftp> STAT /
+2026-07-26 21:18:56,578 [INFO] session=1 client=127.0.0.1:64329 state=authenticated command=STAT /
+2026-07-26 21:18:56,579 [INFO] session=1 client=127.0.0.1:64329 state=authenticated fs command=STAT virtual=/
+2026-07-26 21:18:56,579 [INFO] session=1 client=127.0.0.1:64329 state=authenticated reply=212 End
+212-dir entries=6 mtime=20260726141856 path=/ name=/
+212 End
+ftp> SIZE /docs/readme.txt
+2026-07-26 21:18:56,579 [INFO] session=1 client=127.0.0.1:64329 state=authenticated command=SIZE /docs/readme.txt
+2026-07-26 21:18:56,580 [INFO] session=1 client=127.0.0.1:64329 state=authenticated fs command=SIZE virtual=/
+2026-07-26 21:18:56,580 [INFO] session=1 client=127.0.0.1:64329 state=authenticated reply=213 15
+213 15
+ftp> MDTM /docs/readme.txt
+2026-07-26 21:18:56,580 [INFO] session=1 client=127.0.0.1:64329 state=authenticated command=MDTM /docs/readme.txt
+2026-07-26 21:18:56,580 [INFO] session=1 client=127.0.0.1:64329 state=authenticated fs command=MDTM virtual=/
+2026-07-26 21:18:56,580 [INFO] session=1 client=127.0.0.1:64329 state=authenticated reply=213 20260726141856
+213 20260726141856
+ftp> MKD newdir
+2026-07-26 21:18:56,581 [INFO] session=1 client=127.0.0.1:64329 state=authenticated command=MKD newdir
+2026-07-26 21:18:56,581 [INFO] session=1 client=127.0.0.1:64329 state=authenticated fs command=MKD virtual=/
+2026-07-26 21:18:56,581 [INFO] session=1 client=127.0.0.1:64329 state=authenticated reply=257 "/newdir" created
+257 "/newdir" created
+ftp> RMD empty
+2026-07-26 21:18:56,581 [INFO] session=1 client=127.0.0.1:64329 state=authenticated command=RMD empty
+2026-07-26 21:18:56,582 [INFO] session=1 client=127.0.0.1:64329 state=authenticated fs command=RMD virtual=/
+2026-07-26 21:18:56,582 [INFO] session=1 client=127.0.0.1:64329 state=authenticated reply=250 Requested file action okay, completed
+250 Requested file action okay, completed
+ftp> DELE delete-me.txt
+2026-07-26 21:18:56,582 [INFO] session=1 client=127.0.0.1:64329 state=authenticated command=DELE delete-me.txt
+2026-07-26 21:18:56,583 [INFO] session=1 client=127.0.0.1:64329 state=authenticated fs command=DELE virtual=/
+2026-07-26 21:18:56,583 [INFO] session=1 client=127.0.0.1:64329 state=authenticated reply=250 Requested file action okay, completed
+250 Requested file action okay, completed
+ftp> RNTO nope.txt
+2026-07-26 21:18:56,583 [INFO] session=1 client=127.0.0.1:64329 state=authenticated command=RNTO nope.txt
+2026-07-26 21:18:56,583 [INFO] session=1 client=127.0.0.1:64329 state=authenticated fs command=RNTO virtual=/
+2026-07-26 21:18:56,583 [INFO] session=1 client=127.0.0.1:64329 state=authenticated reply=503 Bad sequence of commands
+503 Bad sequence of commands
+ftp> RNFR old.txt
+2026-07-26 21:18:56,583 [INFO] session=1 client=127.0.0.1:64329 state=authenticated command=RNFR old.txt
+2026-07-26 21:18:56,584 [INFO] session=1 client=127.0.0.1:64329 state=authenticated fs command=RNFR virtual=/
+2026-07-26 21:18:56,584 [INFO] session=1 client=127.0.0.1:64329 state=authenticated reply=350 Requested file action pending further information
+350 Requested file action pending further information
+ftp> STAT
+2026-07-26 21:18:56,584 [INFO] session=1 client=127.0.0.1:64329 state=authenticated command=STAT
+2026-07-26 21:18:56,584 [INFO] session=1 client=127.0.0.1:64329 state=authenticated fs command=STAT virtual=/
+2026-07-26 21:18:56,584 [INFO] session=1 client=127.0.0.1:64329 state=authenticated reply=212 End
+212-user=student state=authenticated
+212-cwd=/ root=/
+212-implemented=PWD CWD CDUP LIST NLST STAT SIZE MDTM MKD RMD DELE RNFR RNTO TYPE MODE PASV PORT RETR STOR STOU APPE ABOR HASH
+212-type=I mode=S data_mode=NONE endpoint=none
+212-transfer=id=none direction=idle bytes=0
+212-pending_rename=/old.txt
+212-active_sessions=1
+212-session=1 client=127.0.0.1:64329 auth=True cwd=/ data_mode=NONE endpoint=none transfer=idle bytes=0
+212 End
+ftp> PWD
+2026-07-26 21:18:56,585 [INFO] session=1 client=127.0.0.1:64329 state=authenticated command=PWD
+2026-07-26 21:18:56,585 [INFO] session=1 client=127.0.0.1:64329 state=authenticated fs command=PWD virtual=/
+2026-07-26 21:18:56,585 [INFO] session=1 client=127.0.0.1:64329 state=authenticated reply=257 "/" is current directory
+257 "/" is current directory
+ftp> RNTO renamed.txt
+2026-07-26 21:18:56,585 [INFO] session=1 client=127.0.0.1:64329 state=authenticated command=RNTO renamed.txt
+2026-07-26 21:18:56,586 [INFO] session=1 client=127.0.0.1:64329 state=authenticated fs command=RNTO virtual=/
+2026-07-26 21:18:56,586 [INFO] session=1 client=127.0.0.1:64329 state=authenticated reply=250 Requested file action okay, completed
+250 Requested file action okay, completed
+ftp> RMD /
+2026-07-26 21:18:56,586 [INFO] session=1 client=127.0.0.1:64329 state=authenticated command=RMD /
+2026-07-26 21:18:56,587 [INFO] session=1 client=127.0.0.1:64329 state=authenticated fs command=RMD virtual=/
+2026-07-26 21:18:56,587 [INFO] session=1 client=127.0.0.1:64329 state=authenticated reply=550 Cannot remove the current directory, its parent, or root
+550 Cannot remove the current directory, its parent, or root
+ftp> RNFR /
+2026-07-26 21:18:56,587 [INFO] session=1 client=127.0.0.1:64329 state=authenticated command=RNFR /
+2026-07-26 21:18:56,587 [INFO] session=1 client=127.0.0.1:64329 state=authenticated fs command=RNFR virtual=/
+2026-07-26 21:18:56,587 [INFO] session=1 client=127.0.0.1:64329 state=authenticated reply=550 Cannot rename root, current directory, or its parent
+550 Cannot rename root, current directory, or its parent
+ftp> QUIT
+2026-07-26 21:18:56,587 [INFO] session=1 client=127.0.0.1:64329 state=authenticated command=QUIT
+2026-07-26 21:18:56,587 [INFO] session=1 client=127.0.0.1:64329 state=quit reply=221 Goodbye
+221 Goodbye
+2026-07-26 21:18:56,588 [INFO] session=2 client=127.0.0.1:64330 state=connected connect
+2026-07-26 21:18:56,613 [INFO] session=2 client=127.0.0.1:64330 state=connected disconnect without QUIT
+2026-07-26 21:18:56,613 [INFO] shutdown complete
+ok
+test_open_style_client_flow (test_tcp_smoke.TCPSmokeTests.test_open_style_client_flow) ... 2026-07-26 21:18:56,615 [INFO] server root=C:\Users\Administrator\AppData\Local\Temp\tmpmpc4jt4u\server_root
+2026-07-26 21:18:56,615 [INFO] listening host=127.0.0.1 port=64331
+ftp> open 127.0.0.1 64331
+2026-07-26 21:18:56,616 [INFO] session=1 client=127.0.0.1:64332 state=connected connect
+220 Hybrid FTP server ready
+ftp> NOOP
+2026-07-26 21:18:56,629 [INFO] session=1 client=127.0.0.1:64332 state=connected command=NOOP
+2026-07-26 21:18:56,629 [INFO] session=1 client=127.0.0.1:64332 state=connected reply=200 NOOP ok
+200 NOOP ok
+ftp> QUIT
+2026-07-26 21:18:56,629 [INFO] session=1 client=127.0.0.1:64332 state=connected command=QUIT
+2026-07-26 21:18:56,629 [INFO] session=1 client=127.0.0.1:64332 state=quit reply=221 Goodbye
+221 Goodbye
+2026-07-26 21:18:56,630 [INFO] session=2 client=127.0.0.1:64333 state=connected connect
+2026-07-26 21:18:56,644 [INFO] session=2 client=127.0.0.1:64333 state=connected disconnect without QUIT
+2026-07-26 21:18:56,644 [INFO] shutdown complete
+ok
+test_open_style_rejects_commands_before_open_and_bad_open_syntax (test_tcp_smoke.TCPSmokeTests.test_open_style_rejects_commands_before_open_and_bad_open_syntax) ... ok
+test_scripted_client_flow_and_multiline_sync (test_tcp_smoke.TCPSmokeTests.test_scripted_client_flow_and_multiline_sync) ... ftp> NOOP
+530 Not connected; use open <host> <port>
+ftp> open 127.0.0.1 not-a-port
+501 Syntax error in parameters or arguments
+2026-07-26 21:18:56,645 [INFO] server root=C:\Users\Administrator\AppData\Local\Temp\tmp5sfhcthw\server_root
+2026-07-26 21:18:56,646 [INFO] listening host=127.0.0.1 port=64334
+2026-07-26 21:18:56,646 [INFO] session=1 client=127.0.0.1:64335 state=connected connect
+220 Hybrid FTP server ready
+ftp> USER unknown
+2026-07-26 21:18:56,646 [INFO] session=1 client=127.0.0.1:64335 state=connected command=USER unknown
+2026-07-26 21:18:56,646 [INFO] session=1 client=127.0.0.1:64335 state=connected reply=530 Invalid username
+530 Invalid username
+ftp> PASS ********
+2026-07-26 21:18:56,646 [INFO] session=1 client=127.0.0.1:64335 state=connected command=PASS ********
+2026-07-26 21:18:56,646 [INFO] session=1 client=127.0.0.1:64335 state=connected reply=503 Bad sequence of commands
+503 Bad sequence of commands
+ftp> LIST
+2026-07-26 21:18:56,647 [INFO] session=1 client=127.0.0.1:64335 state=connected command=LIST
+530 Not logged in
+ftp> USER student
+2026-07-26 21:18:56,647 [INFO] session=1 client=127.0.0.1:64335 state=connected command=USER student
+2026-07-26 21:18:56,647 [INFO] session=1 client=127.0.0.1:64335 state=pending user reply=331 User name okay, need password
+331 User name okay, need password
+ftp> PASS ********
+2026-07-26 21:18:56,647 [INFO] session=1 client=127.0.0.1:64335 state=pending user command=PASS ********
+2026-07-26 21:18:56,647 [INFO] session=1 client=127.0.0.1:64335 state=authenticated authenticated username=student
+2026-07-26 21:18:56,647 [INFO] session=1 client=127.0.0.1:64335 state=authenticated reply=230 User logged in
+230 User logged in
+ftp> HELP
+2026-07-26 21:18:56,647 [INFO] session=1 client=127.0.0.1:64335 state=authenticated command=HELP
+2026-07-26 21:18:56,647 [INFO] session=1 client=127.0.0.1:64335 state=authenticated reply=214 End of help
+214-Control commands:
+214-  HELP NOOP PASS QUIT USER
+214-Filesystem commands:
+214-  CDUP CWD DELE LIST MDTM MKD NLST PWD RMD RNFR RNTO SIZE STAT
+214-UDP data commands:
+214-  ABOR APPE HASH MODE PASV PORT RETR STOR STOU TYPE
+214 End of help
+ftp> HELP USER
+2026-07-26 21:18:56,648 [INFO] session=1 client=127.0.0.1:64335 state=authenticated command=HELP USER
+2026-07-26 21:18:56,648 [INFO] session=1 client=127.0.0.1:64335 state=authenticated reply=214 End of help
+214-USER <username> - begin login with the demo account username.
+214 End of help
+ftp> NOOP
+2026-07-26 21:18:56,648 [INFO] session=1 client=127.0.0.1:64335 state=authenticated command=NOOP
+2026-07-26 21:18:56,648 [INFO] session=1 client=127.0.0.1:64335 state=authenticated reply=200 NOOP ok
+200 NOOP ok
+ftp> BOGUS
+2026-07-26 21:18:56,648 [INFO] session=1 client=127.0.0.1:64335 state=authenticated command=BOGUS
+2026-07-26 21:18:56,648 [INFO] session=1 client=127.0.0.1:64335 state=authenticated reply=500 Unknown command
+500 Unknown command
+ftp> LIST
+2026-07-26 21:18:56,648 [INFO] session=1 client=127.0.0.1:64335 state=authenticated command=LIST
+2026-07-26 21:18:56,649 [INFO] session=1 client=127.0.0.1:64335 state=authenticated fs command=LIST virtual=/
+2026-07-26 21:18:56,649 [INFO] session=1 client=127.0.0.1:64335 state=authenticated reply=212 End
+212-(empty)
+212 End
+ftp> QUIT
+2026-07-26 21:18:56,649 [INFO] session=1 client=127.0.0.1:64335 state=authenticated command=QUIT
+2026-07-26 21:18:56,649 [INFO] session=1 client=127.0.0.1:64335 state=quit reply=221 Goodbye
+221 Goodbye
+2026-07-26 21:18:56,649 [INFO] session=2 client=127.0.0.1:64336 state=connected connect
+2026-07-26 21:18:56,660 [INFO] session=2 client=127.0.0.1:64336 state=connected disconnect without QUIT
+2026-07-26 21:18:56,660 [INFO] shutdown complete
+ok
+test_server_control_line_smoke (test_tcp_smoke.TCPSmokeTests.test_server_control_line_smoke) ... 2026-07-26 21:18:56,661 [INFO] server root=C:\Users\Administrator\AppData\Local\Temp\tmpkbwf5w33\server_root
+2026-07-26 21:18:56,662 [INFO] listening host=127.0.0.1 port=64337
+2026-07-26 21:18:56,662 [INFO] session=1 client=127.0.0.1:64338 state=connected connect
+2026-07-26 21:18:56,675 [INFO] session=1 client=127.0.0.1:64338 state=connected command=NOOP
+2026-07-26 21:18:56,675 [INFO] session=1 client=127.0.0.1:64338 state=connected reply=200 NOOP ok
+2026-07-26 21:18:56,675 [INFO] session=1 client=127.0.0.1:64338 state=connected command=BOGUS
+2026-07-26 21:18:56,675 [INFO] session=1 client=127.0.0.1:64338 state=connected reply=500 Unknown command
+2026-07-26 21:18:56,676 [INFO] session=1 client=127.0.0.1:64338 state=connected command=QUIT
+2026-07-26 21:18:56,677 [INFO] session=1 client=127.0.0.1:64338 state=quit reply=221 Goodbye
+2026-07-26 21:18:56,677 [INFO] session=2 client=127.0.0.1:64339 state=connected connect
+2026-07-26 21:18:56,691 [INFO] session=2 client=127.0.0.1:64339 state=connected disconnect without QUIT
+2026-07-26 21:18:56,691 [INFO] shutdown complete
+ok
+test_unauthenticated_filesystem_commands_are_gated_before_validation (test_tcp_smoke.TCPSmokeTests.test_unauthenticated_filesystem_commands_are_gated_before_validation) ... 2026-07-26 21:18:56,693 [INFO] server root=C:\Users\Administrator\AppData\Local\Temp\tmp41gmem61\server_root
+2026-07-26 21:18:56,693 [INFO] listening host=127.0.0.1 port=64340
+2026-07-26 21:18:56,693 [INFO] session=1 client=127.0.0.1:64341 state=connected connect
+220 Hybrid FTP server ready
+ftp> PWD
+2026-07-26 21:18:56,694 [INFO] session=1 client=127.0.0.1:64341 state=connected command=PWD
+530 Not logged in
+ftp> CWD
+2026-07-26 21:18:56,694 [INFO] session=1 client=127.0.0.1:64341 state=connected command=CWD
+530 Not logged in
+ftp> SIZE missing.txt
+2026-07-26 21:18:56,694 [INFO] session=1 client=127.0.0.1:64341 state=connected command=SIZE missing.txt
+530 Not logged in
+ftp> MKD bad
+2026-07-26 21:18:56,694 [INFO] session=1 client=127.0.0.1:64341 state=connected command=MKD bad
+530 Not logged in
+ftp> DELE bad
+2026-07-26 21:18:56,694 [INFO] session=1 client=127.0.0.1:64341 state=connected command=DELE bad
+530 Not logged in
+ftp> RNFR old
+2026-07-26 21:18:56,695 [INFO] session=1 client=127.0.0.1:64341 state=connected command=RNFR old
+530 Not logged in
+ftp> RNTO new
+2026-07-26 21:18:56,695 [INFO] session=1 client=127.0.0.1:64341 state=connected command=RNTO new
+530 Not logged in
+ftp> RETR file.txt
+2026-07-26 21:18:56,695 [INFO] session=1 client=127.0.0.1:64341 state=connected command=RETR file.txt
+530 Not logged in
+ftp> QUIT
+2026-07-26 21:18:56,695 [INFO] session=1 client=127.0.0.1:64341 state=connected command=QUIT
+2026-07-26 21:18:56,695 [INFO] session=1 client=127.0.0.1:64341 state=quit reply=221 Goodbye
+221 Goodbye
+2026-07-26 21:18:56,695 [INFO] session=2 client=127.0.0.1:64342 state=connected connect
+2026-07-26 21:18:56,706 [INFO] session=2 client=127.0.0.1:64342 state=connected disconnect without QUIT
+2026-07-26 21:18:56,706 [INFO] shutdown complete
+ok
+test_binary_transfer_uses_window_and_atomic_destination (test_transfer.TransferTests.test_binary_transfer_uses_window_and_atomic_destination) ... ok
+test_passive_binary_upload_download_and_hash (test_transfer_protocol.TransferProtocolTests.test_passive_binary_upload_download_and_hash) ... 2026-07-26 21:18:56,710 [INFO] server root=C:\Users\Administrator\AppData\Local\Temp\tmp6za2wiyn\server
+2026-07-26 21:18:56,710 [INFO] listening host=127.0.0.1 port=64343
+2026-07-26 21:18:56,710 [INFO] session=1 client=127.0.0.1:64344 state=connected connect
+220 Hybrid FTP server ready
+ftp> USER student
+2026-07-26 21:18:56,722 [INFO] session=1 client=127.0.0.1:64344 state=connected command=USER student
+2026-07-26 21:18:56,722 [INFO] session=1 client=127.0.0.1:64344 state=pending user reply=331 User name okay, need password
+331 User name okay, need password
+ftp> PASS ********
+2026-07-26 21:18:56,722 [INFO] session=1 client=127.0.0.1:64344 state=pending user command=PASS ********
+2026-07-26 21:18:56,722 [INFO] session=1 client=127.0.0.1:64344 state=authenticated authenticated username=student
+2026-07-26 21:18:56,722 [INFO] session=1 client=127.0.0.1:64344 state=authenticated reply=230 User logged in
+230 User logged in
+ftp> TYPE I
+2026-07-26 21:18:56,722 [INFO] session=1 client=127.0.0.1:64344 state=authenticated command=TYPE I
+2026-07-26 21:18:56,722 [INFO] session=1 client=127.0.0.1:64344 state=authenticated reply=200 Type set to I
+200 Type set to I
+ftp> MODE S
+2026-07-26 21:18:56,722 [INFO] session=1 client=127.0.0.1:64344 state=authenticated command=MODE S
+2026-07-26 21:18:56,722 [INFO] session=1 client=127.0.0.1:64344 state=authenticated reply=200 Mode set to S
+200 Mode set to S
+ftp> PASV
+2026-07-26 21:18:56,723 [INFO] session=1 client=127.0.0.1:64344 state=authenticated command=PASV
+2026-07-26 21:18:56,723 [INFO] session=1 client=127.0.0.1:64344 state=authenticated pasv endpoint=127.0.0.1:57161
+2026-07-26 21:18:56,723 [INFO] session=1 client=127.0.0.1:64344 state=authenticated reply=227 Entering Passive Mode (127,0,0,1,223,73)
+227 Entering Passive Mode (127,0,0,1,223,73)
+ftp> STOR uploaded.bin
+2026-07-26 21:18:56,723 [INFO] session=1 client=127.0.0.1:64344 state=authenticated command=STOR uploaded.bin
+2026-07-26 21:18:56,723 [INFO] session=1 client=127.0.0.1:64344 state=authenticated transfer prepared id=8839297047035392177 direction=receive path=/uploaded.bin
+2026-07-26 21:18:56,723 [INFO] session=1 client=127.0.0.1:64344 state=authenticated reply=150 Opening UDP data connection; transfer_id=8839297047035392177
+150 Opening UDP data connection; transfer_id=8839297047035392177
+2026-07-26 21:18:56,724 [INFO] session=1 client=127.0.0.1:64344 state=authenticated rdt receive id=8839297047035392177 seq=0 expected=0 buffered=1
+2026-07-26 21:18:56,724 [INFO] session=1 client=127.0.0.1:64344 state=authenticated rdt window drain id=8839297047035392177 next=1
+2026-07-26 21:18:56,724 [INFO] session=1 client=127.0.0.1:64344 state=authenticated rdt receive id=8839297047035392177 seq=1 expected=1 buffered=1
+2026-07-26 21:18:56,724 [INFO] session=1 client=127.0.0.1:64344 state=authenticated rdt window drain id=8839297047035392177 next=2
+2026-07-26 21:18:56,724 [INFO] session=1 client=127.0.0.1:64344 state=authenticated rdt receive id=8839297047035392177 seq=2 expected=2 buffered=1
+2026-07-26 21:18:56,724 [INFO] session=1 client=127.0.0.1:64344 state=authenticated rdt window drain id=8839297047035392177 next=3
+UDP upload bytes=3098 sha256=0db70a282cdbe6431951e9f5c0af55efeb839cace440f67d89b1c4a4a6794d4f
+2026-07-26 21:18:56,725 [INFO] session=1 client=127.0.0.1:64344 state=authenticated transfer complete id=8839297047035392177 bytes=3098 sha256=0db70a282cdbe6431951e9f5c0af55efeb839cace440f67d89b1c4a4a6794d4f retransmissions=0
+2026-07-26 21:18:56,725 [INFO] session=1 client=127.0.0.1:64344 state=authenticated reply=226 Transfer complete; bytes=3098; sha256=0db70a282cdbe6431951e9f5c0af55efeb839cace440f67d89b1c4a4a6794d4f
+226 Transfer complete; bytes=3098; sha256=0db70a282cdbe6431951e9f5c0af55efeb839cace440f67d89b1c4a4a6794d4f
+ftp> HASH uploaded.bin
+2026-07-26 21:18:56,725 [INFO] session=1 client=127.0.0.1:64344 state=authenticated command=HASH uploaded.bin
+2026-07-26 21:18:56,726 [INFO] session=1 client=127.0.0.1:64344 state=authenticated reply=213 0db70a282cdbe6431951e9f5c0af55efeb839cace440f67d89b1c4a4a6794d4f
+213 0db70a282cdbe6431951e9f5c0af55efeb839cace440f67d89b1c4a4a6794d4f
+SHA-256 local=0db70a282cdbe6431951e9f5c0af55efeb839cace440f67d89b1c4a4a6794d4f server=0db70a282cdbe6431951e9f5c0af55efeb839cace440f67d89b1c4a4a6794d4f match=True
+ftp> PASV
+2026-07-26 21:18:56,726 [INFO] session=1 client=127.0.0.1:64344 state=authenticated command=PASV
+2026-07-26 21:18:56,726 [INFO] session=1 client=127.0.0.1:64344 state=authenticated pasv endpoint=127.0.0.1:57163
+2026-07-26 21:18:56,726 [INFO] session=1 client=127.0.0.1:64344 state=authenticated reply=227 Entering Passive Mode (127,0,0,1,223,75)
+227 Entering Passive Mode (127,0,0,1,223,75)
+ftp> RETR uploaded.bin
+2026-07-26 21:18:56,726 [INFO] session=1 client=127.0.0.1:64344 state=authenticated command=RETR uploaded.bin
+2026-07-26 21:18:56,727 [INFO] session=1 client=127.0.0.1:64344 state=authenticated transfer prepared id=14246614890678343984 direction=send path=/uploaded.bin
+2026-07-26 21:18:56,727 [INFO] session=1 client=127.0.0.1:64344 state=authenticated reply=150 Opening UDP data connection; transfer_id=14246614890678343984
+150 Opening UDP data connection; transfer_id=14246614890678343984
+2026-07-26 21:18:56,727 [INFO] session=1 client=127.0.0.1:64344 state=authenticated rdt passive peer ready id=14246614890678343984 peer=127.0.0.1:57164
+2026-07-26 21:18:56,727 [INFO] session=1 client=127.0.0.1:64344 state=authenticated rdt send id=14246614890678343984 seq=0 window=0:7
+2026-07-26 21:18:56,727 [INFO] session=1 client=127.0.0.1:64344 state=authenticated rdt send id=14246614890678343984 seq=1 window=0:7
+2026-07-26 21:18:56,727 [INFO] session=1 client=127.0.0.1:64344 state=authenticated rdt send id=14246614890678343984 seq=2 window=0:7
+2026-07-26 21:18:56,727 [INFO] session=1 client=127.0.0.1:64344 state=authenticated rdt ack id=14246614890678343984 ack=0 advertised_window=7
+2026-07-26 21:18:56,727 [INFO] session=1 client=127.0.0.1:64344 state=authenticated rdt window advance id=14246614890678343984 base=1
+2026-07-26 21:18:56,727 [INFO] session=1 client=127.0.0.1:64344 state=authenticated rdt ack id=14246614890678343984 ack=1 advertised_window=7
+2026-07-26 21:18:56,727 [INFO] session=1 client=127.0.0.1:64344 state=authenticated rdt window advance id=14246614890678343984 base=2
+2026-07-26 21:18:56,728 [INFO] session=1 client=127.0.0.1:64344 state=authenticated rdt ack id=14246614890678343984 ack=2 advertised_window=7
+2026-07-26 21:18:56,728 [INFO] session=1 client=127.0.0.1:64344 state=authenticated rdt window advance id=14246614890678343984 base=3
+2026-07-26 21:18:56,728 [INFO] session=1 client=127.0.0.1:64344 state=authenticated rdt fin id=14246614890678343984 seq=3 attempt=1
+2026-07-26 21:18:56,728 [INFO] session=1 client=127.0.0.1:64344 state=authenticated transfer complete id=14246614890678343984 bytes=3098 sha256=0db70a282cdbe6431951e9f5c0af55efeb839cace440f67d89b1c4a4a6794d4f retransmissions=0
+2026-07-26 21:18:56,728 [INFO] session=1 client=127.0.0.1:64344 state=authenticated reply=226 Transfer complete; bytes=3098; sha256=0db70a282cdbe6431951e9f5c0af55efeb839cace440f67d89b1c4a4a6794d4f
+UDP download bytes=3098 sha256=0db70a282cdbe6431951e9f5c0af55efeb839cace440f67d89b1c4a4a6794d4f
+226 Transfer complete; bytes=3098; sha256=0db70a282cdbe6431951e9f5c0af55efeb839cace440f67d89b1c4a4a6794d4f
+ftp> HASH uploaded.bin
+2026-07-26 21:18:56,728 [INFO] session=1 client=127.0.0.1:64344 state=authenticated command=HASH uploaded.bin
+2026-07-26 21:18:56,729 [INFO] session=1 client=127.0.0.1:64344 state=authenticated reply=213 0db70a282cdbe6431951e9f5c0af55efeb839cace440f67d89b1c4a4a6794d4f
+213 0db70a282cdbe6431951e9f5c0af55efeb839cace440f67d89b1c4a4a6794d4f
+SHA-256 local=0db70a282cdbe6431951e9f5c0af55efeb839cace440f67d89b1c4a4a6794d4f server=0db70a282cdbe6431951e9f5c0af55efeb839cace440f67d89b1c4a4a6794d4f match=True
+ftp> HASH uploaded.bin
+2026-07-26 21:18:56,729 [INFO] session=1 client=127.0.0.1:64344 state=authenticated command=HASH uploaded.bin
+2026-07-26 21:18:56,730 [INFO] session=1 client=127.0.0.1:64344 state=authenticated reply=213 0db70a282cdbe6431951e9f5c0af55efeb839cace440f67d89b1c4a4a6794d4f
+213 0db70a282cdbe6431951e9f5c0af55efeb839cace440f67d89b1c4a4a6794d4f
+ftp> QUIT
+2026-07-26 21:18:56,730 [INFO] session=1 client=127.0.0.1:64344 state=authenticated command=QUIT
+2026-07-26 21:18:56,730 [INFO] session=1 client=127.0.0.1:64344 state=quit reply=221 Goodbye
+221 Goodbye
+2026-07-26 21:18:56,730 [INFO] session=2 client=127.0.0.1:64345 state=connected connect
+2026-07-26 21:18:56,754 [INFO] session=2 client=127.0.0.1:64345 state=connected disconnect without QUIT
+2026-07-26 21:18:56,754 [INFO] shutdown complete
+ok
+
+----------------------------------------------------------------------
+Ran 46 tests in 0.801s
+
+OK

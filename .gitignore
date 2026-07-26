@@ -8,9 +8,16 @@ server_root/
 logs/
 *.log
 
-# Preserve curated Phase 1 evidence for report/demo screenshots.
+# Preserve curated evidence used by the report/demo while excluding runtime roots.
 !demo/evidence/
 !demo/evidence/phase1/
 !demo/evidence/phase1/.gitkeep
 !demo/evidence/phase1/phase1-control-transcript.txt
 !demo/evidence/phase1/phase1-server.log
+!demo/evidence/phase2/
+!demo/evidence/phase2/phase2-filesystem-transcript.txt
+!demo/evidence/phase2/phase2-server.log
+!demo/evidence/final/
+!demo/evidence/final/final-transfer-transcript.txt
+!demo/evidence/final/final-server.log
+.claude/

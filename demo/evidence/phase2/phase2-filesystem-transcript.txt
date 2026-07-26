@@ -1,0 +1,86 @@
+220 Hybrid FTP server ready
+ftp> USER student
+331 User name okay, need password
+ftp> PASS <redacted>
+230 User logged in
+ftp> PWD
+257 "/" is current directory
+ftp> CWD docs
+250 Directory changed to "/docs"
+ftp> PWD
+257 "/docs" is current directory
+ftp> CDUP
+250 Directory changed to "/"
+ftp> LIST /
+212-dir entries=1 mtime=20260726143756 path=/docs name=docs
+212-dir entries=0 mtime=20260726143756 path=/empty name=empty
+212-dir entries=1 mtime=20260726143756 path=/nested name=nested
+212-file size=6 mtime=20260726143756 path=/.hidden name=.hidden
+212-file size=6 mtime=20260726143756 path=/delete-me.txt name=delete-me.txt
+212-file size=8 mtime=20260726143756 path=/existing.txt name=existing.txt
+212-file size=5 mtime=20260726143756 path=/name with space.txt name=name with space.txt
+212-file size=3 mtime=20260726143756 path=/old.txt name=old.txt
+212 End
+ftp> NLST /
+212-docs
+212-empty
+212-nested
+212-.hidden
+212-delete-me.txt
+212-existing.txt
+212-name with space.txt
+212-old.txt
+212 End
+ftp> STAT
+212-user=student state=authenticated
+212-cwd=/ root=/
+212-implemented=PWD CWD CDUP LIST NLST STAT SIZE MDTM MKD RMD DELE RNFR RNTO TYPE MODE PASV PORT RETR STOR STOU APPE ABOR HASH
+212-type=I mode=S data_mode=NONE endpoint=none
+212-transfer=id=none direction=idle bytes=0
+212-pending_rename=none
+212-active_sessions=1
+212-session=1 client=127.0.0.1:64854 auth=True cwd=/ data_mode=NONE endpoint=none transfer=idle bytes=0
+212 End
+ftp> STAT /
+212-dir entries=8 mtime=20260726143756 path=/ name=/
+212 End
+ftp> SIZE /docs/readme.txt
+213 15
+ftp> MDTM /docs/readme.txt
+213 20260726143756
+ftp> SIZE /docs
+550 SIZE requires a regular file
+ftp> MKD created
+257 "/created" created
+ftp> RMD empty
+250 Requested file action okay, completed
+ftp> DELE docs
+550 Target is not a regular file
+ftp> DELE ../outside.txt
+550 Path escapes server root
+ftp> RNTO no-source.txt
+503 Bad sequence of commands
+ftp> RNFR old.txt
+350 Requested file action pending further information
+ftp> RNTO existing.txt
+550 Destination already exists
+ftp> RNTO second-try.txt
+503 Bad sequence of commands
+ftp> RNFR old.txt
+350 Requested file action pending further information
+ftp> RNTO renamed.txt
+250 Requested file action okay, completed
+ftp> DELE delete-me.txt
+250 Requested file action okay, completed
+ftp> RMD /
+550 Cannot remove the current directory, its parent, or root
+ftp> RNFR /
+550 Cannot rename root, current directory, or its parent
+ftp> RMD nested
+550 Directory not empty
+ftp> LIST /name with space.txt
+212-file size=5 mtime=20260726143756 path=/name with space.txt name=name with space.txt
+212 End
+ftp> QUIT
+221 Goodbye
+Phase 2 demo complete

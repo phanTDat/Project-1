@@ -1,6 +1,6 @@
 import unittest
 
-from hybridftp.commands import ParseError, help_reply, is_protected_placeholder, parse_control_line
+from hybridftp.commands import ParseError, help_reply, is_filesystem_command, is_protected_placeholder, parse_control_line
 from hybridftp.replies import format_reply
 
 
@@ -24,7 +24,8 @@ class CommandParsingTests(unittest.TestCase):
             parse_control_line(b"USER \xff\r\n")
 
     def test_protected_placeholder_membership(self):
-        self.assertTrue(is_protected_placeholder("LIST"))
+        self.assertTrue(is_filesystem_command("LIST"))
+        self.assertFalse(is_protected_placeholder("LIST"))
         self.assertTrue(is_protected_placeholder("HASH"))
         self.assertFalse(is_protected_placeholder("NOOP"))
 

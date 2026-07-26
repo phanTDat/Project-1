@@ -1,44 +1,44 @@
-2026-06-06 22:23:02,621 [INFO] server root=D:\Users\Asus\OneDrive\Máy tính\CS494 - Internetworking Protocol\Project 1\demo\evidence\phase1\server_root_runtime
-2026-06-06 22:23:02,622 [INFO] listening host=127.0.0.1 port=54672
-2026-06-06 22:23:02,626 [INFO] session=1 client=127.0.0.1:54673 state=connected connect
-2026-06-06 22:23:02,627 [INFO] session=1 client=127.0.0.1:54673 state=connected reply=220 Hybrid FTP server ready
-2026-06-06 22:23:02,647 [INFO] session=1 client=127.0.0.1:54673 state=connected command=USER unknown
-2026-06-06 22:23:02,647 [INFO] session=1 client=127.0.0.1:54673 state=connected invalid username=unknown
-2026-06-06 22:23:02,647 [INFO] session=1 client=127.0.0.1:54673 state=connected reply=530 Invalid username
-2026-06-06 22:23:02,648 [INFO] session=1 client=127.0.0.1:54673 state=connected command=PASS ********
-2026-06-06 22:23:02,648 [INFO] session=1 client=127.0.0.1:54673 state=connected PASS rejected: bad sequence
-2026-06-06 22:23:02,648 [INFO] session=1 client=127.0.0.1:54673 state=connected reply=503 Bad sequence of commands
-2026-06-06 22:23:02,648 [INFO] session=1 client=127.0.0.1:54673 state=connected command=LIST
-2026-06-06 22:23:02,649 [INFO] session=1 client=127.0.0.1:54673 state=connected protected placeholder blocked before login
-2026-06-06 22:23:02,649 [INFO] session=1 client=127.0.0.1:54673 state=connected reply=530 Not logged in
-2026-06-06 22:23:02,649 [INFO] session=1 client=127.0.0.1:54673 state=connected command=USER student
-2026-06-06 22:23:02,649 [INFO] session=1 client=127.0.0.1:54673 state=pending user pending username=student
-2026-06-06 22:23:02,649 [INFO] session=1 client=127.0.0.1:54673 state=pending user reply=331 User name okay, need password
-2026-06-06 22:23:02,650 [INFO] session=1 client=127.0.0.1:54673 state=pending user command=PASS ********
-2026-06-06 22:23:02,650 [INFO] session=1 client=127.0.0.1:54673 state=connected login failed username=student
-2026-06-06 22:23:02,650 [INFO] session=1 client=127.0.0.1:54673 state=connected reply=530 Login incorrect
-2026-06-06 22:23:02,651 [INFO] session=1 client=127.0.0.1:54673 state=connected command=USER student
-2026-06-06 22:23:02,651 [INFO] session=1 client=127.0.0.1:54673 state=pending user pending username=student
-2026-06-06 22:23:02,651 [INFO] session=1 client=127.0.0.1:54673 state=pending user reply=331 User name okay, need password
-2026-06-06 22:23:02,651 [INFO] session=1 client=127.0.0.1:54673 state=pending user command=PASS ********
-2026-06-06 22:23:02,651 [INFO] session=1 client=127.0.0.1:54673 state=authenticated authenticated username=student
-2026-06-06 22:23:02,651 [INFO] session=1 client=127.0.0.1:54673 state=authenticated reply=230 User logged in
-2026-06-06 22:23:02,652 [INFO] session=1 client=127.0.0.1:54673 state=authenticated command=HELP
-2026-06-06 22:23:02,652 [INFO] session=1 client=127.0.0.1:54673 state=authenticated reply=214 End of help
-2026-06-06 22:23:02,653 [INFO] session=1 client=127.0.0.1:54673 state=authenticated command=HELP USER
-2026-06-06 22:23:02,653 [INFO] session=1 client=127.0.0.1:54673 state=authenticated reply=214 End of help
-2026-06-06 22:23:02,653 [INFO] session=1 client=127.0.0.1:54673 state=authenticated command=NOOP
-2026-06-06 22:23:02,653 [INFO] session=1 client=127.0.0.1:54673 state=authenticated reply=200 NOOP ok
-2026-06-06 22:23:02,653 [INFO] session=1 client=127.0.0.1:54673 state=authenticated command=BOGUS
-2026-06-06 22:23:02,653 [INFO] session=1 client=127.0.0.1:54673 state=authenticated reply=500 Unknown command
-2026-06-06 22:23:02,654 [INFO] session=1 client=127.0.0.1:54673 state=authenticated command=LIST
-2026-06-06 22:23:02,654 [INFO] session=1 client=127.0.0.1:54673 state=authenticated protected placeholder deferred
-2026-06-06 22:23:02,654 [INFO] session=1 client=127.0.0.1:54673 state=authenticated reply=502 Command not implemented yet
-2026-06-06 22:23:02,654 [INFO] session=1 client=127.0.0.1:54673 state=authenticated command=QUIT
-2026-06-06 22:23:02,654 [INFO] session=1 client=127.0.0.1:54673 state=quit quit requested
-2026-06-06 22:23:02,654 [INFO] session=1 client=127.0.0.1:54673 state=quit reply=221 Goodbye
-2026-06-06 22:23:02,654 [INFO] session=1 client=127.0.0.1:54673 state=quit disconnect after QUIT
-2026-06-06 22:23:02,655 [INFO] session=2 client=127.0.0.1:54674 state=connected connect
-2026-06-06 22:23:02,655 [INFO] session=2 client=127.0.0.1:54674 state=connected reply=220 Hybrid FTP server ready
-2026-06-06 22:23:02,677 [INFO] session=2 client=127.0.0.1:54674 state=connected disconnect without QUIT
-2026-06-06 22:23:02,677 [INFO] shutdown complete
+2026-06-07 00:06:41,013 [INFO] server root=D:\Users\Asus\OneDrive\Máy tính\CS494 - Internetworking Protocol\Project 1\demo\evidence\phase1\server_root_runtime
+2026-06-07 00:06:41,015 [INFO] listening host=127.0.0.1 port=58305
+2026-06-07 00:06:41,021 [INFO] session=1 client=127.0.0.1:58306 state=connected connect
+2026-06-07 00:06:41,021 [INFO] session=1 client=127.0.0.1:58306 state=connected reply=220 Hybrid FTP server ready
+2026-06-07 00:06:41,022 [INFO] session=1 client=127.0.0.1:58306 state=connected command=USER unknown
+2026-06-07 00:06:41,022 [INFO] session=1 client=127.0.0.1:58306 state=connected invalid username=unknown
+2026-06-07 00:06:41,022 [INFO] session=1 client=127.0.0.1:58306 state=connected reply=530 Invalid username
+2026-06-07 00:06:41,023 [INFO] session=1 client=127.0.0.1:58306 state=connected command=PASS ********
+2026-06-07 00:06:41,023 [INFO] session=1 client=127.0.0.1:58306 state=connected PASS rejected: bad sequence
+2026-06-07 00:06:41,023 [INFO] session=1 client=127.0.0.1:58306 state=connected reply=503 Bad sequence of commands
+2026-06-07 00:06:41,023 [INFO] session=1 client=127.0.0.1:58306 state=connected command=LIST
+2026-06-07 00:06:41,023 [INFO] session=1 client=127.0.0.1:58306 state=connected protected placeholder blocked before login
+2026-06-07 00:06:41,024 [INFO] session=1 client=127.0.0.1:58306 state=connected reply=530 Not logged in
+2026-06-07 00:06:41,024 [INFO] session=1 client=127.0.0.1:58306 state=connected command=USER student
+2026-06-07 00:06:41,024 [INFO] session=1 client=127.0.0.1:58306 state=pending user pending username=student
+2026-06-07 00:06:41,024 [INFO] session=1 client=127.0.0.1:58306 state=pending user reply=331 User name okay, need password
+2026-06-07 00:06:41,024 [INFO] session=1 client=127.0.0.1:58306 state=pending user command=PASS ********
+2026-06-07 00:06:41,024 [INFO] session=1 client=127.0.0.1:58306 state=connected login failed username=student
+2026-06-07 00:06:41,025 [INFO] session=1 client=127.0.0.1:58306 state=connected reply=530 Login incorrect
+2026-06-07 00:06:41,025 [INFO] session=1 client=127.0.0.1:58306 state=connected command=USER student
+2026-06-07 00:06:41,025 [INFO] session=1 client=127.0.0.1:58306 state=pending user pending username=student
+2026-06-07 00:06:41,025 [INFO] session=1 client=127.0.0.1:58306 state=pending user reply=331 User name okay, need password
+2026-06-07 00:06:41,025 [INFO] session=1 client=127.0.0.1:58306 state=pending user command=PASS ********
+2026-06-07 00:06:41,026 [INFO] session=1 client=127.0.0.1:58306 state=authenticated authenticated username=student
+2026-06-07 00:06:41,026 [INFO] session=1 client=127.0.0.1:58306 state=authenticated reply=230 User logged in
+2026-06-07 00:06:41,026 [INFO] session=1 client=127.0.0.1:58306 state=authenticated command=HELP
+2026-06-07 00:06:41,026 [INFO] session=1 client=127.0.0.1:58306 state=authenticated reply=214 End of help
+2026-06-07 00:06:41,028 [INFO] session=1 client=127.0.0.1:58306 state=authenticated command=HELP USER
+2026-06-07 00:06:41,028 [INFO] session=1 client=127.0.0.1:58306 state=authenticated reply=214 End of help
+2026-06-07 00:06:41,028 [INFO] session=1 client=127.0.0.1:58306 state=authenticated command=NOOP
+2026-06-07 00:06:41,029 [INFO] session=1 client=127.0.0.1:58306 state=authenticated reply=200 NOOP ok
+2026-06-07 00:06:41,029 [INFO] session=1 client=127.0.0.1:58306 state=authenticated command=BOGUS
+2026-06-07 00:06:41,029 [INFO] session=1 client=127.0.0.1:58306 state=authenticated reply=500 Unknown command
+2026-06-07 00:06:41,029 [INFO] session=1 client=127.0.0.1:58306 state=authenticated command=LIST
+2026-06-07 00:06:41,029 [INFO] session=1 client=127.0.0.1:58306 state=authenticated protected placeholder deferred
+2026-06-07 00:06:41,030 [INFO] session=1 client=127.0.0.1:58306 state=authenticated reply=502 Command not implemented yet
+2026-06-07 00:06:41,030 [INFO] session=1 client=127.0.0.1:58306 state=authenticated command=QUIT
+2026-06-07 00:06:41,030 [INFO] session=1 client=127.0.0.1:58306 state=quit quit requested
+2026-06-07 00:06:41,030 [INFO] session=1 client=127.0.0.1:58306 state=quit reply=221 Goodbye
+2026-06-07 00:06:41,030 [INFO] session=1 client=127.0.0.1:58306 state=quit disconnect after QUIT
+2026-06-07 00:06:41,031 [INFO] session=2 client=127.0.0.1:58307 state=connected connect
+2026-06-07 00:06:41,031 [INFO] session=2 client=127.0.0.1:58307 state=connected reply=220 Hybrid FTP server ready
+2026-06-07 00:06:41,032 [INFO] session=2 client=127.0.0.1:58307 state=connected disconnect without QUIT
+2026-06-07 00:06:41,032 [INFO] shutdown complete
