@@ -1,62 +1,62 @@
-2026-07-26 21:37:56,845 [INFO] server root=<server_root>
-2026-07-26 21:37:56,845 [INFO] listening host=127.0.0.1 port=64850
-2026-07-26 21:37:56,847 [INFO] session=1 client=127.0.0.1:64851 state=connected connect
-2026-07-26 21:37:56,848 [INFO] session=1 client=127.0.0.1:64851 state=connected command=USER student
-2026-07-26 21:37:56,848 [INFO] session=1 client=127.0.0.1:64851 state=pending user reply=331 User name okay, need password
-2026-07-26 21:37:56,848 [INFO] session=1 client=127.0.0.1:64851 state=pending user command=PASS <redacted>
-2026-07-26 21:37:56,848 [INFO] session=1 client=127.0.0.1:64851 state=authenticated authenticated username=student
-2026-07-26 21:37:56,848 [INFO] session=1 client=127.0.0.1:64851 state=authenticated reply=230 User logged in
-2026-07-26 21:37:56,848 [INFO] session=1 client=127.0.0.1:64851 state=authenticated command=TYPE I
-2026-07-26 21:37:56,848 [INFO] session=1 client=127.0.0.1:64851 state=authenticated reply=200 Type set to I
-2026-07-26 21:37:56,848 [INFO] session=1 client=127.0.0.1:64851 state=authenticated command=MODE S
-2026-07-26 21:37:56,849 [INFO] session=1 client=127.0.0.1:64851 state=authenticated reply=200 Mode set to S
-2026-07-26 21:37:56,849 [INFO] session=1 client=127.0.0.1:64851 state=authenticated command=PASV
-2026-07-26 21:37:56,849 [INFO] session=1 client=127.0.0.1:64851 state=authenticated pasv endpoint=127.0.0.1:51112
-2026-07-26 21:37:56,849 [INFO] session=1 client=127.0.0.1:64851 state=authenticated reply=227 Entering Passive Mode (127,0,0,1,199,168)
-2026-07-26 21:37:56,849 [INFO] session=1 client=127.0.0.1:64851 state=authenticated command=STOR evidence.bin
-2026-07-26 21:37:56,850 [INFO] session=1 client=127.0.0.1:64851 state=authenticated transfer prepared id=10572601904168761871 direction=receive path=/evidence.bin
-2026-07-26 21:37:56,850 [INFO] session=1 client=127.0.0.1:64851 state=authenticated reply=150 Opening UDP data connection; transfer_id=10572601904168761871
-2026-07-26 21:37:56,850 [INFO] session=1 client=127.0.0.1:64851 state=authenticated rdt receive id=10572601904168761871 seq=0 expected=0 buffered=1
-2026-07-26 21:37:56,850 [INFO] session=1 client=127.0.0.1:64851 state=authenticated rdt window drain id=10572601904168761871 next=1
-2026-07-26 21:37:56,850 [INFO] session=1 client=127.0.0.1:64851 state=authenticated rdt receive id=10572601904168761871 seq=1 expected=1 buffered=1
-2026-07-26 21:37:56,851 [INFO] session=1 client=127.0.0.1:64851 state=authenticated rdt window drain id=10572601904168761871 next=2
-2026-07-26 21:37:56,851 [INFO] session=1 client=127.0.0.1:64851 state=authenticated rdt receive id=10572601904168761871 seq=2 expected=2 buffered=1
-2026-07-26 21:37:56,851 [INFO] session=1 client=127.0.0.1:64851 state=authenticated rdt window drain id=10572601904168761871 next=3
-2026-07-26 21:37:56,851 [INFO] session=1 client=127.0.0.1:64851 state=authenticated rdt receive id=10572601904168761871 seq=3 expected=3 buffered=1
-2026-07-26 21:37:56,851 [INFO] session=1 client=127.0.0.1:64851 state=authenticated rdt window drain id=10572601904168761871 next=4
-2026-07-26 21:37:56,851 [INFO] session=1 client=127.0.0.1:64851 state=authenticated transfer complete id=10572601904168761871 bytes=4128 sha256=f2576e2ed1d12648278b41633d2595eae659b694a900e8a77e58942004715914 retransmissions=0
-2026-07-26 21:37:56,852 [INFO] session=1 client=127.0.0.1:64851 state=authenticated reply=226 Transfer complete; bytes=4128; sha256=f2576e2ed1d12648278b41633d2595eae659b694a900e8a77e58942004715914
-2026-07-26 21:37:56,852 [INFO] session=1 client=127.0.0.1:64851 state=authenticated command=HASH evidence.bin
-2026-07-26 21:37:56,852 [INFO] session=1 client=127.0.0.1:64851 state=authenticated reply=213 f2576e2ed1d12648278b41633d2595eae659b694a900e8a77e58942004715914
-2026-07-26 21:37:56,853 [INFO] session=1 client=127.0.0.1:64851 state=authenticated command=PASV
-2026-07-26 21:37:56,853 [INFO] session=1 client=127.0.0.1:64851 state=authenticated pasv endpoint=127.0.0.1:51114
-2026-07-26 21:37:56,853 [INFO] session=1 client=127.0.0.1:64851 state=authenticated reply=227 Entering Passive Mode (127,0,0,1,199,170)
-2026-07-26 21:37:56,853 [INFO] session=1 client=127.0.0.1:64851 state=authenticated command=RETR evidence.bin
-2026-07-26 21:37:56,854 [INFO] session=1 client=127.0.0.1:64851 state=authenticated transfer prepared id=8740831833150750956 direction=send path=/evidence.bin
-2026-07-26 21:37:56,854 [INFO] session=1 client=127.0.0.1:64851 state=authenticated reply=150 Opening UDP data connection; transfer_id=8740831833150750956
-2026-07-26 21:37:56,854 [INFO] session=1 client=127.0.0.1:64851 state=authenticated rdt passive peer ready id=8740831833150750956 peer=127.0.0.1:51115
-2026-07-26 21:37:56,855 [INFO] session=1 client=127.0.0.1:64851 state=authenticated rdt send id=8740831833150750956 seq=0 window=0:7
-2026-07-26 21:37:56,855 [INFO] session=1 client=127.0.0.1:64851 state=authenticated rdt send id=8740831833150750956 seq=1 window=0:7
-2026-07-26 21:37:56,855 [INFO] session=1 client=127.0.0.1:64851 state=authenticated rdt send id=8740831833150750956 seq=2 window=0:7
-2026-07-26 21:37:56,855 [INFO] session=1 client=127.0.0.1:64851 state=authenticated rdt send id=8740831833150750956 seq=3 window=0:7
-2026-07-26 21:37:56,855 [INFO] session=1 client=127.0.0.1:64851 state=authenticated rdt ack id=8740831833150750956 ack=0 advertised_window=7
-2026-07-26 21:37:56,855 [INFO] session=1 client=127.0.0.1:64851 state=authenticated rdt window advance id=8740831833150750956 base=1
-2026-07-26 21:37:56,855 [INFO] session=1 client=127.0.0.1:64851 state=authenticated rdt ack id=8740831833150750956 ack=1 advertised_window=7
-2026-07-26 21:37:56,855 [INFO] session=1 client=127.0.0.1:64851 state=authenticated rdt window advance id=8740831833150750956 base=2
-2026-07-26 21:37:56,855 [INFO] session=1 client=127.0.0.1:64851 state=authenticated rdt ack id=8740831833150750956 ack=2 advertised_window=7
-2026-07-26 21:37:56,855 [INFO] session=1 client=127.0.0.1:64851 state=authenticated rdt window advance id=8740831833150750956 base=3
-2026-07-26 21:37:56,855 [INFO] session=1 client=127.0.0.1:64851 state=authenticated rdt ack id=8740831833150750956 ack=3 advertised_window=7
-2026-07-26 21:37:56,855 [INFO] session=1 client=127.0.0.1:64851 state=authenticated rdt window advance id=8740831833150750956 base=4
-2026-07-26 21:37:56,855 [INFO] session=1 client=127.0.0.1:64851 state=authenticated rdt fin id=8740831833150750956 seq=4 attempt=1
-2026-07-26 21:37:56,855 [INFO] session=1 client=127.0.0.1:64851 state=authenticated transfer complete id=8740831833150750956 bytes=4128 sha256=f2576e2ed1d12648278b41633d2595eae659b694a900e8a77e58942004715914 retransmissions=0
-2026-07-26 21:37:56,856 [INFO] session=1 client=127.0.0.1:64851 state=authenticated reply=226 Transfer complete; bytes=4128; sha256=f2576e2ed1d12648278b41633d2595eae659b694a900e8a77e58942004715914
-2026-07-26 21:37:56,856 [INFO] session=1 client=127.0.0.1:64851 state=authenticated command=HASH evidence.bin
-2026-07-26 21:37:56,857 [INFO] session=1 client=127.0.0.1:64851 state=authenticated reply=213 f2576e2ed1d12648278b41633d2595eae659b694a900e8a77e58942004715914
-2026-07-26 21:37:56,857 [INFO] session=1 client=127.0.0.1:64851 state=authenticated command=STAT
-2026-07-26 21:37:56,857 [INFO] session=1 client=127.0.0.1:64851 state=authenticated fs command=STAT virtual=/
-2026-07-26 21:37:56,857 [INFO] session=1 client=127.0.0.1:64851 state=authenticated reply=212 End
-2026-07-26 21:37:56,858 [INFO] session=1 client=127.0.0.1:64851 state=authenticated command=QUIT
-2026-07-26 21:37:56,859 [INFO] session=1 client=127.0.0.1:64851 state=quit reply=221 Goodbye
-2026-07-26 21:37:56,859 [INFO] session=2 client=127.0.0.1:64852 state=connected connect
-2026-07-26 21:37:56,869 [INFO] session=2 client=127.0.0.1:64852 state=connected disconnect without QUIT
-2026-07-26 21:37:56,869 [INFO] shutdown complete
+2026-07-26 21:42:33,744 [INFO] server root=<server_root>
+2026-07-26 21:42:33,744 [INFO] listening host=127.0.0.1 port=65004
+2026-07-26 21:42:33,746 [INFO] session=1 client=127.0.0.1:65005 state=connected connect
+2026-07-26 21:42:33,747 [INFO] session=1 client=127.0.0.1:65005 state=connected command=USER student
+2026-07-26 21:42:33,747 [INFO] session=1 client=127.0.0.1:65005 state=pending user reply=331 User name okay, need password
+2026-07-26 21:42:33,747 [INFO] session=1 client=127.0.0.1:65005 state=pending user command=PASS <redacted>
+2026-07-26 21:42:33,747 [INFO] session=1 client=127.0.0.1:65005 state=authenticated authenticated username=student
+2026-07-26 21:42:33,747 [INFO] session=1 client=127.0.0.1:65005 state=authenticated reply=230 User logged in
+2026-07-26 21:42:33,747 [INFO] session=1 client=127.0.0.1:65005 state=authenticated command=TYPE I
+2026-07-26 21:42:33,747 [INFO] session=1 client=127.0.0.1:65005 state=authenticated reply=200 Type set to I
+2026-07-26 21:42:33,748 [INFO] session=1 client=127.0.0.1:65005 state=authenticated command=MODE S
+2026-07-26 21:42:33,748 [INFO] session=1 client=127.0.0.1:65005 state=authenticated reply=200 Mode set to S
+2026-07-26 21:42:33,748 [INFO] session=1 client=127.0.0.1:65005 state=authenticated command=PASV
+2026-07-26 21:42:33,748 [INFO] session=1 client=127.0.0.1:65005 state=authenticated pasv endpoint=127.0.0.1:58725
+2026-07-26 21:42:33,748 [INFO] session=1 client=127.0.0.1:65005 state=authenticated reply=227 Entering Passive Mode (127,0,0,1,229,101)
+2026-07-26 21:42:33,749 [INFO] session=1 client=127.0.0.1:65005 state=authenticated command=STOR evidence.bin
+2026-07-26 21:42:33,749 [INFO] session=1 client=127.0.0.1:65005 state=authenticated transfer prepared id=14543125257654725500 direction=receive path=/evidence.bin
+2026-07-26 21:42:33,749 [INFO] session=1 client=127.0.0.1:65005 state=authenticated reply=150 Opening UDP data connection; transfer_id=14543125257654725500
+2026-07-26 21:42:33,750 [INFO] session=1 client=127.0.0.1:65005 state=authenticated rdt receive id=14543125257654725500 seq=0 expected=0 buffered=1
+2026-07-26 21:42:33,750 [INFO] session=1 client=127.0.0.1:65005 state=authenticated rdt window drain id=14543125257654725500 next=1
+2026-07-26 21:42:33,750 [INFO] session=1 client=127.0.0.1:65005 state=authenticated rdt receive id=14543125257654725500 seq=1 expected=1 buffered=1
+2026-07-26 21:42:33,751 [INFO] session=1 client=127.0.0.1:65005 state=authenticated rdt window drain id=14543125257654725500 next=2
+2026-07-26 21:42:33,751 [INFO] session=1 client=127.0.0.1:65005 state=authenticated rdt receive id=14543125257654725500 seq=2 expected=2 buffered=1
+2026-07-26 21:42:33,751 [INFO] session=1 client=127.0.0.1:65005 state=authenticated rdt window drain id=14543125257654725500 next=3
+2026-07-26 21:42:33,751 [INFO] session=1 client=127.0.0.1:65005 state=authenticated rdt receive id=14543125257654725500 seq=3 expected=3 buffered=1
+2026-07-26 21:42:33,751 [INFO] session=1 client=127.0.0.1:65005 state=authenticated rdt window drain id=14543125257654725500 next=4
+2026-07-26 21:42:33,752 [INFO] session=1 client=127.0.0.1:65005 state=authenticated transfer complete id=14543125257654725500 bytes=4128 sha256=f2576e2ed1d12648278b41633d2595eae659b694a900e8a77e58942004715914 retransmissions=0
+2026-07-26 21:42:33,752 [INFO] session=1 client=127.0.0.1:65005 state=authenticated reply=226 Transfer complete; bytes=4128; sha256=f2576e2ed1d12648278b41633d2595eae659b694a900e8a77e58942004715914
+2026-07-26 21:42:33,752 [INFO] session=1 client=127.0.0.1:65005 state=authenticated command=HASH evidence.bin
+2026-07-26 21:42:33,753 [INFO] session=1 client=127.0.0.1:65005 state=authenticated reply=213 f2576e2ed1d12648278b41633d2595eae659b694a900e8a77e58942004715914
+2026-07-26 21:42:33,754 [INFO] session=1 client=127.0.0.1:65005 state=authenticated command=PASV
+2026-07-26 21:42:33,754 [INFO] session=1 client=127.0.0.1:65005 state=authenticated pasv endpoint=127.0.0.1:58727
+2026-07-26 21:42:33,754 [INFO] session=1 client=127.0.0.1:65005 state=authenticated reply=227 Entering Passive Mode (127,0,0,1,229,103)
+2026-07-26 21:42:33,754 [INFO] session=1 client=127.0.0.1:65005 state=authenticated command=RETR evidence.bin
+2026-07-26 21:42:33,755 [INFO] session=1 client=127.0.0.1:65005 state=authenticated transfer prepared id=14488230509483353700 direction=send path=/evidence.bin
+2026-07-26 21:42:33,755 [INFO] session=1 client=127.0.0.1:65005 state=authenticated reply=150 Opening UDP data connection; transfer_id=14488230509483353700
+2026-07-26 21:42:33,756 [INFO] session=1 client=127.0.0.1:65005 state=authenticated rdt passive peer ready id=14488230509483353700 peer=127.0.0.1:58728
+2026-07-26 21:42:33,756 [INFO] session=1 client=127.0.0.1:65005 state=authenticated rdt send id=14488230509483353700 seq=0 window=0:7
+2026-07-26 21:42:33,756 [INFO] session=1 client=127.0.0.1:65005 state=authenticated rdt send id=14488230509483353700 seq=1 window=0:7
+2026-07-26 21:42:33,756 [INFO] session=1 client=127.0.0.1:65005 state=authenticated rdt send id=14488230509483353700 seq=2 window=0:7
+2026-07-26 21:42:33,756 [INFO] session=1 client=127.0.0.1:65005 state=authenticated rdt send id=14488230509483353700 seq=3 window=0:7
+2026-07-26 21:42:33,756 [INFO] session=1 client=127.0.0.1:65005 state=authenticated rdt ack id=14488230509483353700 ack=0 advertised_window=7
+2026-07-26 21:42:33,757 [INFO] session=1 client=127.0.0.1:65005 state=authenticated rdt window advance id=14488230509483353700 base=1
+2026-07-26 21:42:33,757 [INFO] session=1 client=127.0.0.1:65005 state=authenticated rdt ack id=14488230509483353700 ack=1 advertised_window=7
+2026-07-26 21:42:33,757 [INFO] session=1 client=127.0.0.1:65005 state=authenticated rdt window advance id=14488230509483353700 base=2
+2026-07-26 21:42:33,757 [INFO] session=1 client=127.0.0.1:65005 state=authenticated rdt ack id=14488230509483353700 ack=2 advertised_window=7
+2026-07-26 21:42:33,757 [INFO] session=1 client=127.0.0.1:65005 state=authenticated rdt window advance id=14488230509483353700 base=3
+2026-07-26 21:42:33,757 [INFO] session=1 client=127.0.0.1:65005 state=authenticated rdt ack id=14488230509483353700 ack=3 advertised_window=7
+2026-07-26 21:42:33,757 [INFO] session=1 client=127.0.0.1:65005 state=authenticated rdt window advance id=14488230509483353700 base=4
+2026-07-26 21:42:33,757 [INFO] session=1 client=127.0.0.1:65005 state=authenticated rdt fin id=14488230509483353700 seq=4 attempt=1
+2026-07-26 21:42:33,757 [INFO] session=1 client=127.0.0.1:65005 state=authenticated transfer complete id=14488230509483353700 bytes=4128 sha256=f2576e2ed1d12648278b41633d2595eae659b694a900e8a77e58942004715914 retransmissions=0
+2026-07-26 21:42:33,757 [INFO] session=1 client=127.0.0.1:65005 state=authenticated reply=226 Transfer complete; bytes=4128; sha256=f2576e2ed1d12648278b41633d2595eae659b694a900e8a77e58942004715914
+2026-07-26 21:42:33,758 [INFO] session=1 client=127.0.0.1:65005 state=authenticated command=HASH evidence.bin
+2026-07-26 21:42:33,759 [INFO] session=1 client=127.0.0.1:65005 state=authenticated reply=213 f2576e2ed1d12648278b41633d2595eae659b694a900e8a77e58942004715914
+2026-07-26 21:42:33,760 [INFO] session=1 client=127.0.0.1:65005 state=authenticated command=STAT
+2026-07-26 21:42:33,760 [INFO] session=1 client=127.0.0.1:65005 state=authenticated fs command=STAT virtual=/
+2026-07-26 21:42:33,760 [INFO] session=1 client=127.0.0.1:65005 state=authenticated reply=212 End
+2026-07-26 21:42:33,761 [INFO] session=1 client=127.0.0.1:65005 state=authenticated command=QUIT
+2026-07-26 21:42:33,761 [INFO] session=1 client=127.0.0.1:65005 state=quit reply=221 Goodbye
+2026-07-26 21:42:33,762 [INFO] session=2 client=127.0.0.1:65006 state=connected connect
+2026-07-26 21:42:33,762 [INFO] session=2 client=127.0.0.1:65006 state=connected disconnect without QUIT
+2026-07-26 21:42:33,762 [INFO] shutdown complete
