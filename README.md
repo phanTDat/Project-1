@@ -4,6 +4,10 @@ A Python standard-library Hybrid FTP client/server for CS494 Internetworking
 Protocols. It uses **TCP only for control** (commands, replies, authentication,
 and session state) and a **custom reliable UDP protocol for every file payload**.
 
+## GitHub
+
+https://github.com/phanTDat/Project-1
+
 ## Excellent-level capabilities
 
 - FTP-style TCP control channel, authentication, standard three-digit replies,
