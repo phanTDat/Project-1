@@ -40,6 +40,17 @@ Commands are UTF-8 lines ending in CRLF. `hybridftp.commands.parse_control_line`
 limits lines to 1024 bytes. Replies use `hybridftp.replies.Reply` and three-digit
 FTP framing; multiline replies use `code-...` lines and a final `code ...` line.
 
+### Transfer type handling
+
+`TYPE I` sends and stores raw bytes, including NUL and high-bit values. `TYPE A`
+uses 7-bit NVT ASCII: the sending endpoint converts local `LF`, `CRLF`, and `CR`
+line endings to `CRLF` in the UDP payload, while the receiver converts NVT
+`CRLF` to the local text newline. The conversion state is streamed across packet
+boundaries, rejects non-ASCII text, and still writes through the temporary-file
+and atomic-rename path. SHA-256 comparisons for `TYPE A` use the logical stored
+text bytes after conversion; `HASH` always reports the server file's stored-byte
+digest.
+
 ### Custom UDP RDT header
 
 `hybridftp.rdt.Packet` uses this fixed 32-byte network-order header:

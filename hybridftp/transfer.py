@@ -15,7 +15,7 @@ import time
 from dataclasses import dataclass
 from pathlib import Path
 from threading import Event
-from typing import Callable
+from typing import Callable, Iterator
 
 from .rdt import (
     DEFAULT_WINDOW,
@@ -68,6 +68,93 @@ def _cancelled(cancel: Event | None) -> bool:
     return cancel is not None and cancel.is_set()
 
 
+class _NvtAsciiEncoder:
+    """Convert local 7-bit text line endings to NVT CRLF byte sequences."""
+
+    def __init__(self) -> None:
+        self._pending_cr = False
+
+    def feed(self, data: bytes, *, final: bool = False) -> bytes:
+        if any(byte > 0x7F for byte in data):
+            raise TransferError("TYPE A source contains non-ASCII bytes")
+        output = bytearray()
+        for byte in data:
+            if self._pending_cr:
+                output.extend(b"\r\n")
+                self._pending_cr = False
+                if byte == 0x0A:
+                    continue
+            if byte == 0x0D:
+                self._pending_cr = True
+            elif byte == 0x0A:
+                output.extend(b"\r\n")
+            else:
+                output.append(byte)
+        if final and self._pending_cr:
+            output.extend(b"\r\n")
+            self._pending_cr = False
+        return bytes(output)
+
+
+class _NvtAsciiDecoder:
+    """Convert NVT CRLF byte sequences to the local text newline."""
+
+    def __init__(self) -> None:
+        self._pending_cr = False
+        self._newline = os.linesep.encode("ascii")
+
+    def feed(self, data: bytes, *, final: bool = False) -> bytes:
+        if any(byte > 0x7F for byte in data):
+            raise TransferError("TYPE A payload contains non-ASCII bytes")
+        output = bytearray()
+        for byte in data:
+            if self._pending_cr:
+                if byte == 0x0A:
+                    output.extend(self._newline)
+                    self._pending_cr = False
+                    continue
+                output.append(0x0D)
+                self._pending_cr = False
+            if byte == 0x0D:
+                self._pending_cr = True
+            else:
+                output.append(byte)
+        if final and self._pending_cr:
+            output.append(0x0D)
+            self._pending_cr = False
+        return bytes(output)
+
+
+def _source_chunks(source: Path, *, ascii_mode: bool) -> Iterator[bytes]:
+    encoder = _NvtAsciiEncoder() if ascii_mode else None
+    buffered = bytearray()
+
+    def emit_chunks() -> Iterator[bytes]:
+        while len(buffered) >= MAX_PAYLOAD:
+            yield bytes(buffered[:MAX_PAYLOAD])
+            del buffered[:MAX_PAYLOAD]
+
+    with source.open("rb") as stream:
+        while chunk := stream.read(MAX_PAYLOAD):
+            buffered.extend(encoder.feed(chunk) if encoder is not None else chunk)
+            yield from emit_chunks()
+    if encoder is not None:
+        buffered.extend(encoder.feed(b"", final=True))
+    if buffered:
+        yield bytes(buffered)
+
+
+def sha256_ascii_path(path: Path) -> str:
+    """Return the SHA-256 of a TYPE A file after local newline normalization."""
+
+    digest = hashlib.sha256()
+    decoder = _NvtAsciiDecoder()
+    for payload in _source_chunks(path, ascii_mode=True):
+        digest.update(decoder.feed(payload))
+    digest.update(decoder.feed(b"", final=True))
+    return digest.hexdigest()
+
+
 def send_file(
     sock: socket.socket,
     peer: tuple[str, int] | None,
@@ -78,8 +165,9 @@ def send_file(
     timeout: float = TIMEOUT_SECONDS,
     cancel: Event | None = None,
     log: Log | None = None,
+    ascii_mode: bool = False,
 ) -> TransferResult:
-    """Send a binary file using an ACKed bounded sliding window.
+    """Send a file using an ACKed bounded sliding window.
 
     In passive RETR the server does not know the client's UDP source port until
     it receives the client's ready ACK, so ``peer`` may be ``None``.
@@ -100,24 +188,25 @@ def send_file(
     try:
         if peer is None:
             peer = _wait_for_ready(sock, transfer_id, cancel, log)
-        with source.open("rb") as stream:
-            while not eof or in_flight:
-                if _cancelled(cancel):
-                    _send_abort(sock, peer, transfer_id)
-                    raise TransferAborted("transfer cancelled")
-                while not eof and next_sequence < base + window_size:
-                    payload = stream.read(MAX_PAYLOAD)
-                    if not payload:
-                        eof = True
-                        break
-                    packet = data_packet(transfer_id, next_sequence, payload, window_size)
-                    sock.sendto(packet.encode(), peer)
-                    in_flight[next_sequence] = [packet, time.monotonic(), 0]
-                    digest.update(payload)
-                    bytes_sent += len(payload)
-                    packets_sent += 1
-                    _emit(log, f"rdt send id={transfer_id} seq={next_sequence} window={base}:{base + window_size - 1}")
-                    next_sequence += 1
+        chunks = _source_chunks(source, ascii_mode=ascii_mode)
+        while not eof or in_flight:
+            if _cancelled(cancel):
+                _send_abort(sock, peer, transfer_id)
+                raise TransferAborted("transfer cancelled")
+            while not eof and next_sequence < base + window_size:
+                try:
+                    payload = next(chunks)
+                except StopIteration:
+                    eof = True
+                    break
+                packet = data_packet(transfer_id, next_sequence, payload, window_size)
+                sock.sendto(packet.encode(), peer)
+                in_flight[next_sequence] = [packet, time.monotonic(), 0]
+                digest.update(payload)
+                bytes_sent += len(payload)
+                packets_sent += 1
+                _emit(log, f"rdt send id={transfer_id} seq={next_sequence} window={base}:{base + window_size - 1}")
+                next_sequence += 1
                 if not in_flight:
                     continue
                 try:
@@ -182,6 +271,7 @@ def receive_file(
     cancel: Event | None = None,
     send_ready: bool = False,
     log: Log | None = None,
+    ascii_mode: bool = False,
 ) -> TransferResult:
     """Receive an ordered transfer into a temp file, then atomically rename it."""
 
@@ -198,6 +288,7 @@ def receive_file(
     expected = 0
     buffered: dict[int, bytes] = {}
     digest = hashlib.sha256()
+    decoder = _NvtAsciiDecoder() if ascii_mode else None
     bytes_received = packets = idle_timeouts = 0
     discovered_peer = peer
     try:
@@ -238,6 +329,12 @@ def receive_file(
                         _send_ack(sock, discovered_peer, transfer_id, max(0, expected - 1), window_size - len(buffered))
                         continue
                     sock.sendto(fin_ack_packet(transfer_id, packet.sequence).encode(), discovered_peer)
+                    if decoder is not None:
+                        final_output = decoder.feed(b"", final=True)
+                        if final_output:
+                            stream.write(final_output)
+                            digest.update(final_output)
+                            bytes_received += len(final_output)
                     stream.flush()
                     os.fsync(stream.fileno())
                     completed = True
@@ -258,9 +355,10 @@ def receive_file(
                 _emit(log, f"rdt receive id={transfer_id} seq={sequence} expected={expected} buffered={len(buffered)}")
                 while expected in buffered:
                     payload = buffered.pop(expected)
-                    stream.write(payload)
-                    digest.update(payload)
-                    bytes_received += len(payload)
+                    output = decoder.feed(payload) if decoder is not None else payload
+                    stream.write(output)
+                    digest.update(output)
+                    bytes_received += len(output)
                     expected += 1
                     _emit(log, f"rdt window drain id={transfer_id} next={expected}")
         temporary.replace(destination)

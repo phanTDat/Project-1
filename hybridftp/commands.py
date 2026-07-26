@@ -31,7 +31,7 @@ HELP_TOPICS: dict[str, str] = {
     "DELE": "DELE <path> - delete an existing regular file inside the server root.",
     "RNFR": "RNFR <path> - choose an existing file or directory as a rename source.",
     "RNTO": "RNTO <path> - rename the pending RNFR source to a safe destination.",
-    "TYPE": "TYPE {A|I} - select ASCII or binary transfer type; payload bytes remain UDP data.",
+    "TYPE": "TYPE {A|I} - A uses 7-bit NVT ASCII CRLF text; I preserves binary bytes over UDP.",
     "MODE": "MODE {S|B|C} - S is supported; B and C return a clear unsupported reply.",
     "PASV": "PASV - open a per-session UDP endpoint and return it in a 227 reply.",
     "PORT": "PORT h1,h2,h3,h4,p1,p2 - set the client's active UDP endpoint.",

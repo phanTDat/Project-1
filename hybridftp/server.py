@@ -282,6 +282,8 @@ def _handle_type(session: Session, command: Command, logger: logging.Logger) -> 
     selected = command.argument.strip().upper()
     if selected not in {"A", "I"}:
         return SYNTAX_ERROR
+    if _transfer_is_active(session):
+        return single(450, "A transfer is already in progress")
     session.transfer_type = selected
     return single(200, f"Type set to {selected}")
 
@@ -415,10 +417,11 @@ def _execute_pending_transfer(session: Session, logger: logging.Logger, context:
     peer = (session.active_endpoint.host, session.active_endpoint.port) if session.data_mode == "ACTIVE" and session.active_endpoint else None
     try:
         log = lambda message: _log(session, logger, message)
+        ascii_mode = session.transfer_type == "A"
         if request.direction == "send":
-            result = send_file(udp_socket, peer, request.source, transfer_id, cancel=session.transfer.cancel, log=log)
+            result = send_file(udp_socket, peer, request.source, transfer_id, cancel=session.transfer.cancel, log=log, ascii_mode=ascii_mode)
         else:
-            result = receive_file(udp_socket, peer, request.destination, transfer_id, cancel=session.transfer.cancel, log=log)
+            result = receive_file(udp_socket, peer, request.destination, transfer_id, cancel=session.transfer.cancel, log=log, ascii_mode=ascii_mode)
             if request.append_to is not None:
                 with context.file_lock(request.append_to):
                     with request.append_to.open("ab") as output, request.destination.open("rb") as incoming:

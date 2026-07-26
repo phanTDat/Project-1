@@ -11,7 +11,7 @@ from typing import TextIO
 from .data_channel import parse_passive_reply
 from .integrity import HashComparison, sha256_path
 from .replies import CRLF
-from .transfer import TransferError, receive_file, send_file
+from .transfer import TransferError, receive_file, send_file, sha256_ascii_path
 
 PROMPT = "ftp> "
 LOCAL_NOT_CONNECTED = "530 Not connected; use open <host> <port>"
@@ -91,19 +91,22 @@ def _passive_endpoint(sock: socket.socket, transcript: TextIO | None):
     return parse_passive_reply(reply[-1])
 
 
-def _display_hash_check(sock: socket.socket, remote: str, local: Path, transcript: TextIO | None) -> None:
+def _display_hash_check(sock: socket.socket, remote: str, local: Path, transcript: TextIO | None, *, ascii_mode: bool) -> None:
     reply = _send_command(sock, f"HASH {remote}", transcript)
     if _reply_code(reply) != 213:
         return
-    comparison = HashComparison(sha256_path(local), reply[-1][4:].strip())
+    local_hash = sha256_ascii_path(local) if ascii_mode else sha256_path(local)
+    comparison = HashComparison(local_hash, reply[-1][4:].strip())
     _write(f"SHA-256 local={comparison.local} server={comparison.remote} match={comparison.matches}", transcript)
 
 
-def _put(sock: socket.socket, local: Path, remote: str, command: str, transcript: TextIO | None) -> None:
+def _put(sock: socket.socket, local: Path, remote: str, command: str, transcript: TextIO | None, *, ascii_mode: bool) -> None:
     if not local.is_file():
         _write("550 Local source is not a regular file", transcript)
         return
     try:
+        if ascii_mode:
+            sha256_ascii_path(local)
         endpoint = _passive_endpoint(sock, transcript)
         _send_raw(sock, f"{command} {remote}".rstrip(), transcript)
         preliminary = _read_reply(sock, transcript)
@@ -111,16 +114,16 @@ def _put(sock: socket.socket, local: Path, remote: str, command: str, transcript
             return
         transfer_id = _transfer_id(preliminary)
         with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as udp:
-            result = send_file(udp, (endpoint.host, endpoint.port), local, transfer_id)
+            result = send_file(udp, (endpoint.host, endpoint.port), local, transfer_id, ascii_mode=ascii_mode)
         _write(f"UDP upload bytes={result.bytes_transferred} sha256={result.sha256}", transcript)
         final = _read_reply(sock, transcript)
         if _reply_code(final) == 226:
-            _display_hash_check(sock, remote, local, transcript)
+            _display_hash_check(sock, remote, local, transcript, ascii_mode=ascii_mode)
     except (OSError, TransferError, ValueError) as exc:
         _write(f"426 Local transfer failed: {exc}", transcript)
 
 
-def _get(sock: socket.socket, remote: str, local: Path, transcript: TextIO | None) -> None:
+def _get(sock: socket.socket, remote: str, local: Path, transcript: TextIO | None, *, ascii_mode: bool) -> None:
     try:
         endpoint = _passive_endpoint(sock, transcript)
         _send_raw(sock, f"RETR {remote}", transcript)
@@ -130,16 +133,16 @@ def _get(sock: socket.socket, remote: str, local: Path, transcript: TextIO | Non
         transfer_id = _transfer_id(preliminary)
         with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as udp:
             udp.bind(("127.0.0.1", 0))
-            result = receive_file(udp, (endpoint.host, endpoint.port), local, transfer_id, send_ready=True)
+            result = receive_file(udp, (endpoint.host, endpoint.port), local, transfer_id, send_ready=True, ascii_mode=ascii_mode)
         _write(f"UDP download bytes={result.bytes_transferred} sha256={result.sha256}", transcript)
         final = _read_reply(sock, transcript)
         if _reply_code(final) == 226:
-            _display_hash_check(sock, remote, local, transcript)
+            _display_hash_check(sock, remote, local, transcript, ascii_mode=ascii_mode)
     except (OSError, TransferError, ValueError) as exc:
         _write(f"426 Local transfer failed: {exc}", transcript)
 
 
-def _local_transfer(sock: socket.socket, command: str, transcript: TextIO | None) -> bool:
+def _local_transfer(sock: socket.socket, command: str, transcript: TextIO | None, *, ascii_mode: bool) -> bool:
     """Run human-friendly local aliases; return whether ``command`` was handled."""
 
     parts = command.split()
@@ -148,25 +151,26 @@ def _local_transfer(sock: socket.socket, command: str, transcript: TextIO | None
     verb = parts[0].lower()
     if verb == "put" and len(parts) in {2, 3}:
         local = Path(parts[1])
-        _put(sock, local, parts[2] if len(parts) == 3 else local.name, "STOR", transcript)
+        _put(sock, local, parts[2] if len(parts) == 3 else local.name, "STOR", transcript, ascii_mode=ascii_mode)
         return True
     if verb == "append" and len(parts) == 3:
-        _put(sock, Path(parts[1]), parts[2], "APPE", transcript)
+        _put(sock, Path(parts[1]), parts[2], "APPE", transcript, ascii_mode=ascii_mode)
         return True
     if verb == "put-unique" and len(parts) in {2, 3}:
         local = Path(parts[1])
-        _put(sock, local, parts[2] if len(parts) == 3 else local.name, "STOU", transcript)
+        _put(sock, local, parts[2] if len(parts) == 3 else local.name, "STOU", transcript, ascii_mode=ascii_mode)
         return True
     if verb == "get" and len(parts) in {2, 3}:
         remote = parts[1]
         local = Path(parts[2]) if len(parts) == 3 else Path(Path(remote).name)
-        _get(sock, remote, local, transcript)
+        _get(sock, remote, local, transcript, ascii_mode=ascii_mode)
         return True
     return False
 
 
 def _run_connected(sock: socket.socket, commands: list[str] | None, transcript: TextIO | None) -> None:
     _read_reply(sock, transcript)
+    transfer_type = "I"
     iterator = iter(commands or [])
     while True:
         try:
@@ -175,9 +179,11 @@ def _run_connected(sock: socket.socket, commands: list[str] | None, transcript: 
             break
         if not command:
             continue
-        if _local_transfer(sock, command, transcript):
+        if _local_transfer(sock, command, transcript, ascii_mode=transfer_type == "A"):
             continue
         replies = _send_command(sock, command, transcript)
+        if command.strip().upper() in {"TYPE A", "TYPE I"} and _reply_code(replies) == 200:
+            transfer_type = command.strip().upper()[-1]
         if command.strip().upper() == "QUIT" or not replies:
             break
 
@@ -200,6 +206,7 @@ def _parse_open(command: str, default_host: str, default_port: int) -> tuple[str
 
 def open_style_run(default_host: str = "127.0.0.1", default_port: int = 2121, commands: list[str] | None = None, transcript: TextIO | None = None) -> int:
     sock: socket.socket | None = None
+    transfer_type = "I"
     iterator = iter(commands or [])
     try:
         while True:
@@ -218,9 +225,11 @@ def open_style_run(default_host: str = "127.0.0.1", default_port: int = 2121, co
                 sock = socket.create_connection(parsed, timeout=5.0)
                 _read_reply(sock, transcript)
                 continue
-            if _local_transfer(sock, command, transcript):
+            if _local_transfer(sock, command, transcript, ascii_mode=transfer_type == "A"):
                 continue
             replies = _send_command(sock, command, transcript)
+            if command.strip().upper() in {"TYPE A", "TYPE I"} and _reply_code(replies) == 200:
+                transfer_type = command.strip().upper()[-1]
             if command.strip().upper() == "QUIT" or not replies:
                 break
     finally:

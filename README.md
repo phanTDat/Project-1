@@ -84,9 +84,10 @@ QUIT
 ```
 
 The client prints SHA-256 local/server comparison after a successful alias
-transfer. `TYPE A` and `TYPE I` record the requested FTP type; both preserve
-raw bytes so no unsafe newline conversion corrupts binary files. `MODE B` and
-`MODE C` receive a clear `504` unsupported response.
+transfer. `TYPE I` preserves raw bytes for binary safety. `TYPE A` accepts only
+7-bit ASCII text and normalizes local `LF`, `CRLF`, and `CR` line endings to NVT
+ASCII `CRLF` over UDP; received NVT `CRLF` is written using the local text
+newline. `MODE B` and `MODE C` receive a clear `504` unsupported response.
 
 ## Active mode
 
