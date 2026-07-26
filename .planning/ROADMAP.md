@@ -9,7 +9,7 @@
 | # | Phase | Goal | Requirements | Success Criteria |
 |---|-------|------|--------------|------------------|
 | 1 | TCP Control MVP | 1/1 | Complete   | 2026-06-06 |
-| 2 | Filesystem Command Slice | Add defendable server-root filesystem navigation, listing, metadata, delete, and rename commands. | FS-01..12 | 5 |
+| 2 | Filesystem Command Slice | Add defendable server-root filesystem navigation, listing, metadata, delete, and rename commands. | FS-01..12 | Complete — 2026-06-07 |
 | 3 | UDP Transfer MVP | Deliver first end-to-end upload/download over UDP with custom reliable packet layer and text transfer support. | MODE-01..04, RDT-01..07, XFER-01..07 | 5 |
 | 4 | Excellent Transfer Reliability | Upgrade transfer layer for binary safety, sliding-window flow control, and SHA-256 integrity verification. | RDT-08, XFER-08, HASH-01..03 | 5 |
 | 5 | FTP Data Modes and Advanced Transfer Commands | Implement PASV/PORT, APPE, STOU, ABOR, and robust data-channel reset behavior. | MODE-05..06, RDT-09, XFER-03..04 | 5 |
