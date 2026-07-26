@@ -151,6 +151,30 @@ class TCPSmokeTests(unittest.TestCase):
             self.assertGreaterEqual(text.count("530 Not logged in"), 8)
             self.assertIn("221 Goodbye", text)
 
+    def test_abor_cancels_active_udp_transfer(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            server, root, _ = self.start_server(tmp)
+            try:
+                with socket.create_connection((server.host, server.port), timeout=2.0) as sock:
+                    sock.settimeout(2.0)
+                    self.assertEqual(recv_reply(sock), "220 Hybrid FTP server ready\r\n")
+                    for command, expected in [(b"USER student\r\n", "331"), (b"PASS cs494\r\n", "230"), (b"PASV\r\n", "227")]:
+                        sock.sendall(command)
+                        self.assertTrue(recv_reply(sock).startswith(expected))
+                    sock.sendall(b"STOR aborted.bin\r\n")
+                    self.assertTrue(recv_reply(sock).startswith("150"))
+                    sock.sendall(b"ABOR\r\n")
+                    replies = [recv_reply(sock), recv_reply(sock)]
+                    self.assertIn("226 Abort successful\r\n", replies)
+                    self.assertIn("426 Connection closed; transfer aborted\r\n", replies)
+                    sock.sendall(b"QUIT\r\n")
+                    self.assertEqual(recv_reply(sock), "221 Goodbye\r\n")
+            finally:
+                server.stop()
+                server.join()
+            self.assertFalse((root / "aborted.bin").exists())
+            self.assertFalse(list(root.glob("*.part")))
+
     def test_scripted_client_flow_and_multiline_sync(self):
         with tempfile.TemporaryDirectory() as tmp:
             server, _, _ = self.start_server(tmp)

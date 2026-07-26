@@ -92,15 +92,36 @@ def _require_argument(command: Command) -> str:
     return argument
 
 
+def _transfer_is_active(session: Session) -> bool:
+    return session.transfer.direction != "idle"
+
+
+def _cancel_transfer(session: Session) -> threading.Thread | None:
+    with session.transfer.lock:
+        if not _transfer_is_active(session):
+            return None
+        session.transfer.cancel.set()
+        return session.transfer.worker
+
+
 def _reset_data_state(session: Session) -> None:
     with session.transfer.lock:
         session.transfer.close_socket()
         session.transfer.direction = "idle"
         session.transfer.transfer_id = None
+        session.transfer.worker = None
         session.pending_transfer = None
         session.data_mode = "NONE"
         session.active_endpoint = None
         session.passive_endpoint = None
+
+
+def _cancel_and_join_transfer(session: Session) -> None:
+    worker = _cancel_transfer(session)
+    if worker is not None and worker is not threading.current_thread():
+        worker.join(timeout=2.0)
+    if worker is None or not worker.is_alive():
+        _reset_data_state(session)
 
 
 def _handle_user(session: Session, command: Command, logger: logging.Logger) -> Reply:
@@ -136,7 +157,7 @@ def _handle_help(session: Session, command: Command, logger: logging.Logger) -> 
 
 
 def _handle_quit(session: Session, command: Command, logger: logging.Logger) -> Reply:
-    _reset_data_state(session)
+    _cancel_transfer(session)
     session.rename_from_real = session.rename_from_virtual = None
     session.state = "quit"
     return single(221, "Goodbye")
@@ -276,6 +297,8 @@ def _handle_mode(session: Session, command: Command, logger: logging.Logger) -> 
 
 
 def _handle_pasv(session: Session, command: Command, logger: logging.Logger) -> Reply:
+    if _transfer_is_active(session):
+        return single(450, "A transfer is already in progress")
     _reset_data_state(session)
     try:
         udp_socket, endpoint = bind_passive_socket(DEFAULT_HOST)
@@ -287,6 +310,8 @@ def _handle_pasv(session: Session, command: Command, logger: logging.Logger) -> 
 
 
 def _handle_port(session: Session, command: Command, logger: logging.Logger) -> Reply:
+    if _transfer_is_active(session):
+        return single(450, "A transfer is already in progress")
     try:
         endpoint = parse_port_argument(command.argument, control_peer_host=session.client_address[0])
     except DataChannelError as exc:
@@ -307,17 +332,17 @@ def _handle_hash(session: Session, command: Command, logger: logging.Logger) -> 
 
 
 def _handle_abor(session: Session, command: Command, logger: logging.Logger) -> Reply:
-    with session.transfer.lock:
-        if session.transfer.direction == "idle":
-            _reset_data_state(session)
-            return single(225, "No transfer in progress")
-        session.transfer.cancel.set()
-    return single(426, "Abort requested")
+    worker = _cancel_transfer(session)
+    if worker is None:
+        _reset_data_state(session)
+        return single(225, "No transfer in progress")
+    _log(session, logger, f"transfer abort requested id={session.transfer.transfer_id}")
+    return single(226, "Abort successful")
 
 
 def _prepare_transfer(session: Session, request: TransferRequest, logger: logging.Logger) -> Reply:
     with session.transfer.lock:
-        if session.transfer.direction != "idle":
+        if _transfer_is_active(session):
             return single(450, "A transfer is already in progress")
         if session.data_mode == "PASSIVE":
             udp_socket = session.transfer.udp_socket
@@ -410,9 +435,10 @@ def _execute_pending_transfer(session: Session, logger: logging.Logger, context:
     except (TransferError, OSError) as exc:
         return single(426, f"Transfer failed: {exc}")
     finally:
-        session.pending_transfer = None
-        session.transfer.finish()
-        session.data_mode, session.active_endpoint, session.passive_endpoint = "NONE", None, None
+        with session.transfer.lock:
+            session.pending_transfer = None
+            session.transfer.finish()
+            session.data_mode, session.active_endpoint, session.passive_endpoint = "NONE", None, None
 
 
 DISPATCH = {
@@ -445,8 +471,34 @@ def handle_command(session: Session, command: Command, logger: logging.Logger, c
     return reply, command.verb == "QUIT"
 
 
-def _send_reply(conn: socket.socket, reply: Reply) -> None:
-    conn.sendall(format_reply(reply))
+def _send_reply(conn: socket.socket, reply: Reply, session: Session | None = None) -> bool:
+    try:
+        if session is None:
+            conn.sendall(format_reply(reply))
+        else:
+            with session.reply_lock:
+                conn.sendall(format_reply(reply))
+        return True
+    except OSError:
+        return False
+
+
+def _run_transfer_worker(conn: socket.socket, session: Session, logger: logging.Logger, context: ServerContext) -> None:
+    final = _execute_pending_transfer(session, logger, context)
+    _log(session, logger, f"reply={final.code} {final.lines[-1]}")
+    _send_reply(conn, final, session)
+
+
+def _start_transfer_worker(conn: socket.socket, session: Session, logger: logging.Logger, context: ServerContext) -> None:
+    worker = threading.Thread(
+        target=_run_transfer_worker,
+        args=(conn, session, logger, context),
+        name=f"hybridftp-transfer-{session.session_id}",
+        daemon=True,
+    )
+    with session.transfer.lock:
+        session.transfer.worker = worker
+    worker.start()
 
 
 def _read_control_line(conn: socket.socket, buffer: bytearray) -> bytes | None:
@@ -491,15 +543,15 @@ def _client_session(conn: socket.socket, address: tuple[str, int], session_id: i
                     _send_reply(conn, SYNTAX_ERROR)
                     continue
                 reply, close_session = handle_command(session, command, logger, context)
-                _send_reply(conn, reply)
+                if not _send_reply(conn, reply, session):
+                    _log(session, logger, "control connection closed while sending reply")
+                    break
                 if reply.code == 150 and session.pending_transfer is not None:
-                    final = _execute_pending_transfer(session, logger, context)
-                    _log(session, logger, f"reply={final.code} {final.lines[-1]}")
-                    _send_reply(conn, final)
+                    _start_transfer_worker(conn, session, logger, context)
                 if close_session:
                     break
     finally:
-        _reset_data_state(session)
+        _cancel_and_join_transfer(session)
         context.registry.remove(session.session_id)
 
 

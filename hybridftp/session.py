@@ -5,7 +5,7 @@ from __future__ import annotations
 import socket
 from dataclasses import dataclass, field
 from pathlib import Path, PurePosixPath
-from threading import Event, RLock
+from threading import Event, RLock, Thread
 
 from .data_channel import Endpoint
 
@@ -23,6 +23,7 @@ class TransferState:
     udp_socket: socket.socket | None = None
     bytes_transferred: int = 0
     sha256: str | None = None
+    worker: Thread | None = None
 
     def close_socket(self) -> None:
         if self.udp_socket is not None:
@@ -36,10 +37,12 @@ class TransferState:
         self.udp_socket = udp_socket
         self.bytes_transferred = 0
         self.sha256 = None
+        self.worker = None
 
     def finish(self) -> None:
         self.close_socket()
         self.direction = "idle"
+        self.worker = None
 
 
 @dataclass(frozen=True)
@@ -73,4 +76,5 @@ class Session:
     passive_endpoint: Endpoint | None = None
     transfer: TransferState = field(default_factory=TransferState)
     pending_transfer: TransferRequest | None = None
+    reply_lock: RLock = field(default_factory=RLock)
     state: str = "connected"
