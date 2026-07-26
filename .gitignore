@@ -20,4 +20,9 @@ logs/
 !demo/evidence/final/
 !demo/evidence/final/final-transfer-transcript.txt
 !demo/evidence/final/final-server.log
+
+# Local course-reference documents are not project deliverables.
+Project1_SocketProgramming_2026.pdf
+Socket_Programming_Seminar_2026.pdf
+
 .claude/
