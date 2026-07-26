@@ -148,11 +148,13 @@ orchestration (`client.py`).
 
 ## 6. GenAI Usage & Code Refinement Log
 
-The full ongoing appendix is `docs/genai-usage-log.md`. It records planning,
-implementation prompts, constraints accepted/rejected, verification commands,
-and student review. Before final submission, attach the exact raw transcript
-exports for each implementation/review session as appendices; do not replace
-raw outputs with summaries.
+The full appendix is `docs/genai-usage-log.md`. GenAI assistance occurred
+across multiple conversations and devices, so the appendix transparently
+separates retained prompt text from reconstructed topics and non-verbatim AI
+output summaries. It then ties each student-owned decision to the final
+modules, tests, and demo evidence; it does not present unavailable records as
+raw transcript exports. Any original excerpts recovered later should be
+attached separately with their source/date.
 
 Critical refinement applied during implementation: AI-generated ideas were
 reduced to standard-library modules only; no FTP framework, third-party RDT

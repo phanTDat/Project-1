@@ -12,14 +12,14 @@ ftp> PWD
 ftp> CDUP
 250 Directory changed to "/"
 ftp> LIST /
-212-dir entries=1 mtime=20260726160309 path=/docs name=docs
-212-dir entries=0 mtime=20260726160309 path=/empty name=empty
-212-dir entries=1 mtime=20260726160309 path=/nested name=nested
-212-file size=6 mtime=20260726160309 path=/.hidden name=.hidden
-212-file size=6 mtime=20260726160309 path=/delete-me.txt name=delete-me.txt
-212-file size=8 mtime=20260726160309 path=/existing.txt name=existing.txt
-212-file size=5 mtime=20260726160309 path=/name with space.txt name=name with space.txt
-212-file size=3 mtime=20260726160309 path=/old.txt name=old.txt
+212-dir entries=1 mtime=20260726162216 path=/docs name=docs
+212-dir entries=0 mtime=20260726162216 path=/empty name=empty
+212-dir entries=1 mtime=20260726162216 path=/nested name=nested
+212-file size=6 mtime=20260726162216 path=/.hidden name=.hidden
+212-file size=6 mtime=20260726162216 path=/delete-me.txt name=delete-me.txt
+212-file size=8 mtime=20260726162216 path=/existing.txt name=existing.txt
+212-file size=5 mtime=20260726162216 path=/name with space.txt name=name with space.txt
+212-file size=3 mtime=20260726162216 path=/old.txt name=old.txt
 212 End
 ftp> NLST /
 212-docs
@@ -39,15 +39,15 @@ ftp> STAT
 212-transfer=id=none direction=idle bytes=0
 212-pending_rename=none
 212-active_sessions=1
-212-session=1 client=127.0.0.1:50402 auth=True cwd=/ data_mode=NONE endpoint=none transfer=idle bytes=0
+212-session=1 client=127.0.0.1:51046 auth=True cwd=/ data_mode=NONE endpoint=none transfer=idle bytes=0
 212 End
 ftp> STAT /
-212-dir entries=8 mtime=20260726160309 path=/ name=/
+212-dir entries=8 mtime=20260726162216 path=/ name=/
 212 End
 ftp> SIZE /docs/readme.txt
 213 15
 ftp> MDTM /docs/readme.txt
-213 20260726160309
+213 20260726162216
 ftp> SIZE /docs
 550 SIZE requires a regular file
 ftp> MKD created
@@ -79,7 +79,7 @@ ftp> RNFR /
 ftp> RMD nested
 550 Directory not empty
 ftp> LIST /name with space.txt
-212-file size=5 mtime=20260726160309 path=/name with space.txt name=name with space.txt
+212-file size=5 mtime=20260726162216 path=/name with space.txt name=name with space.txt
 212 End
 ftp> QUIT
 221 Goodbye
