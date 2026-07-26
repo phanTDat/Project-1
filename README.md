@@ -118,15 +118,3 @@ py -3 demo/final_submission_demo.py
 This produces curated, password/path-redacted output under
 `demo/evidence/final/`. See `docs/technical-report.md` for the report sections,
 packet diagram, workflow diagrams, assignment matrix, and evidence map.
-
-## Oral-defense map
-
-| Question | Primary source |
-|---|---|
-| TCP command parsing/replies | `hybridftp/commands.py`, `hybridftp/replies.py` |
-| Server-root sandbox | `hybridftp/filesystem.py`, `hybridftp/path_utils.py` |
-| UDP header/CRC/flags | `hybridftp/rdt.py` |
-| Window, ACK, retransmission, reorder | `hybridftp/transfer.py` |
-| PASV/PORT validation | `hybridftp/data_channel.py` |
-| Session isolation/concurrency | `hybridftp/session.py`, `hybridftp/session_registry.py`, `hybridftp/server.py` |
-| Client transfer and hashes | `hybridftp/client.py`, `hybridftp/integrity.py` |
