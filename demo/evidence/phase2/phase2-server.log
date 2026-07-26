@@ -1,91 +1,91 @@
-2026-07-26 21:41:53,014 [INFO] server root=<server_root>
-2026-07-26 21:41:53,014 [INFO] listening host=127.0.0.1 port=64961
-2026-07-26 21:41:53,017 [INFO] session=1 client=127.0.0.1:64962 state=connected connect
-2026-07-26 21:41:53,018 [INFO] session=1 client=127.0.0.1:64962 state=connected command=USER student
-2026-07-26 21:41:53,018 [INFO] session=1 client=127.0.0.1:64962 state=pending user reply=331 User name okay, need password
-2026-07-26 21:41:53,018 [INFO] session=1 client=127.0.0.1:64962 state=pending user command=PASS <redacted>
-2026-07-26 21:41:53,018 [INFO] session=1 client=127.0.0.1:64962 state=authenticated authenticated username=student
-2026-07-26 21:41:53,018 [INFO] session=1 client=127.0.0.1:64962 state=authenticated reply=230 User logged in
-2026-07-26 21:41:53,018 [INFO] session=1 client=127.0.0.1:64962 state=authenticated command=PWD
-2026-07-26 21:41:53,018 [INFO] session=1 client=127.0.0.1:64962 state=authenticated fs command=PWD virtual=/
-2026-07-26 21:41:53,018 [INFO] session=1 client=127.0.0.1:64962 state=authenticated reply=257 "/" is current directory
-2026-07-26 21:41:53,019 [INFO] session=1 client=127.0.0.1:64962 state=authenticated command=CWD docs
-2026-07-26 21:41:53,019 [INFO] session=1 client=127.0.0.1:64962 state=authenticated fs command=CWD virtual=/docs
-2026-07-26 21:41:53,019 [INFO] session=1 client=127.0.0.1:64962 state=authenticated reply=250 Directory changed to "/docs"
-2026-07-26 21:41:53,020 [INFO] session=1 client=127.0.0.1:64962 state=authenticated command=PWD
-2026-07-26 21:41:53,020 [INFO] session=1 client=127.0.0.1:64962 state=authenticated fs command=PWD virtual=/docs
-2026-07-26 21:41:53,020 [INFO] session=1 client=127.0.0.1:64962 state=authenticated reply=257 "/docs" is current directory
-2026-07-26 21:41:53,020 [INFO] session=1 client=127.0.0.1:64962 state=authenticated command=CDUP
-2026-07-26 21:41:53,020 [INFO] session=1 client=127.0.0.1:64962 state=authenticated fs command=CDUP virtual=/
-2026-07-26 21:41:53,020 [INFO] session=1 client=127.0.0.1:64962 state=authenticated reply=250 Directory changed to "/"
-2026-07-26 21:41:53,021 [INFO] session=1 client=127.0.0.1:64962 state=authenticated command=LIST /
-2026-07-26 21:41:53,022 [INFO] session=1 client=127.0.0.1:64962 state=authenticated fs command=LIST virtual=/
-2026-07-26 21:41:53,022 [INFO] session=1 client=127.0.0.1:64962 state=authenticated reply=212 End
-2026-07-26 21:41:53,023 [INFO] session=1 client=127.0.0.1:64962 state=authenticated command=NLST /
-2026-07-26 21:41:53,024 [INFO] session=1 client=127.0.0.1:64962 state=authenticated fs command=NLST virtual=/
-2026-07-26 21:41:53,024 [INFO] session=1 client=127.0.0.1:64962 state=authenticated reply=212 End
-2026-07-26 21:41:53,024 [INFO] session=1 client=127.0.0.1:64962 state=authenticated command=STAT
-2026-07-26 21:41:53,024 [INFO] session=1 client=127.0.0.1:64962 state=authenticated fs command=STAT virtual=/
-2026-07-26 21:41:53,024 [INFO] session=1 client=127.0.0.1:64962 state=authenticated reply=212 End
-2026-07-26 21:41:53,025 [INFO] session=1 client=127.0.0.1:64962 state=authenticated command=STAT /
-2026-07-26 21:41:53,026 [INFO] session=1 client=127.0.0.1:64962 state=authenticated fs command=STAT virtual=/
-2026-07-26 21:41:53,026 [INFO] session=1 client=127.0.0.1:64962 state=authenticated reply=212 End
-2026-07-26 21:41:53,026 [INFO] session=1 client=127.0.0.1:64962 state=authenticated command=SIZE /docs/readme.txt
-2026-07-26 21:41:53,026 [INFO] session=1 client=127.0.0.1:64962 state=authenticated fs command=SIZE virtual=/
-2026-07-26 21:41:53,026 [INFO] session=1 client=127.0.0.1:64962 state=authenticated reply=213 15
-2026-07-26 21:41:53,027 [INFO] session=1 client=127.0.0.1:64962 state=authenticated command=MDTM /docs/readme.txt
-2026-07-26 21:41:53,027 [INFO] session=1 client=127.0.0.1:64962 state=authenticated fs command=MDTM virtual=/
-2026-07-26 21:41:53,027 [INFO] session=1 client=127.0.0.1:64962 state=authenticated reply=213 20260726144153
-2026-07-26 21:41:53,027 [INFO] session=1 client=127.0.0.1:64962 state=authenticated command=SIZE /docs
-2026-07-26 21:41:53,028 [INFO] session=1 client=127.0.0.1:64962 state=authenticated fs command=SIZE virtual=/
-2026-07-26 21:41:53,028 [INFO] session=1 client=127.0.0.1:64962 state=authenticated reply=550 SIZE requires a regular file
-2026-07-26 21:41:53,028 [INFO] session=1 client=127.0.0.1:64962 state=authenticated command=MKD created
-2026-07-26 21:41:53,029 [INFO] session=1 client=127.0.0.1:64962 state=authenticated fs command=MKD virtual=/
-2026-07-26 21:41:53,029 [INFO] session=1 client=127.0.0.1:64962 state=authenticated reply=257 "/created" created
-2026-07-26 21:41:53,029 [INFO] session=1 client=127.0.0.1:64962 state=authenticated command=RMD empty
-2026-07-26 21:41:53,030 [INFO] session=1 client=127.0.0.1:64962 state=authenticated fs command=RMD virtual=/
-2026-07-26 21:41:53,030 [INFO] session=1 client=127.0.0.1:64962 state=authenticated reply=250 Requested file action okay, completed
-2026-07-26 21:41:53,030 [INFO] session=1 client=127.0.0.1:64962 state=authenticated command=DELE docs
-2026-07-26 21:41:53,030 [INFO] session=1 client=127.0.0.1:64962 state=authenticated fs command=DELE virtual=/
-2026-07-26 21:41:53,030 [INFO] session=1 client=127.0.0.1:64962 state=authenticated reply=550 Target is not a regular file
-2026-07-26 21:41:53,031 [INFO] session=1 client=127.0.0.1:64962 state=authenticated command=DELE ../outside.txt
-2026-07-26 21:41:53,031 [INFO] session=1 client=127.0.0.1:64962 state=authenticated fs command=DELE virtual=/
-2026-07-26 21:41:53,031 [INFO] session=1 client=127.0.0.1:64962 state=authenticated reply=550 Path escapes server root
-2026-07-26 21:41:53,031 [INFO] session=1 client=127.0.0.1:64962 state=authenticated command=RNTO no-source.txt
-2026-07-26 21:41:53,031 [INFO] session=1 client=127.0.0.1:64962 state=authenticated fs command=RNTO virtual=/
-2026-07-26 21:41:53,031 [INFO] session=1 client=127.0.0.1:64962 state=authenticated reply=503 Bad sequence of commands
-2026-07-26 21:41:53,031 [INFO] session=1 client=127.0.0.1:64962 state=authenticated command=RNFR old.txt
-2026-07-26 21:41:53,032 [INFO] session=1 client=127.0.0.1:64962 state=authenticated fs command=RNFR virtual=/
-2026-07-26 21:41:53,032 [INFO] session=1 client=127.0.0.1:64962 state=authenticated reply=350 Requested file action pending further information
-2026-07-26 21:41:53,032 [INFO] session=1 client=127.0.0.1:64962 state=authenticated command=RNTO existing.txt
-2026-07-26 21:41:53,032 [INFO] session=1 client=127.0.0.1:64962 state=authenticated fs command=RNTO virtual=/
-2026-07-26 21:41:53,032 [INFO] session=1 client=127.0.0.1:64962 state=authenticated reply=550 Destination already exists
-2026-07-26 21:41:53,032 [INFO] session=1 client=127.0.0.1:64962 state=authenticated command=RNTO second-try.txt
-2026-07-26 21:41:53,033 [INFO] session=1 client=127.0.0.1:64962 state=authenticated fs command=RNTO virtual=/
-2026-07-26 21:41:53,033 [INFO] session=1 client=127.0.0.1:64962 state=authenticated reply=503 Bad sequence of commands
-2026-07-26 21:41:53,033 [INFO] session=1 client=127.0.0.1:64962 state=authenticated command=RNFR old.txt
-2026-07-26 21:41:53,033 [INFO] session=1 client=127.0.0.1:64962 state=authenticated fs command=RNFR virtual=/
-2026-07-26 21:41:53,033 [INFO] session=1 client=127.0.0.1:64962 state=authenticated reply=350 Requested file action pending further information
-2026-07-26 21:41:53,033 [INFO] session=1 client=127.0.0.1:64962 state=authenticated command=RNTO renamed.txt
-2026-07-26 21:41:53,034 [INFO] session=1 client=127.0.0.1:64962 state=authenticated fs command=RNTO virtual=/
-2026-07-26 21:41:53,034 [INFO] session=1 client=127.0.0.1:64962 state=authenticated reply=250 Requested file action okay, completed
-2026-07-26 21:41:53,034 [INFO] session=1 client=127.0.0.1:64962 state=authenticated command=DELE delete-me.txt
-2026-07-26 21:41:53,035 [INFO] session=1 client=127.0.0.1:64962 state=authenticated fs command=DELE virtual=/
-2026-07-26 21:41:53,035 [INFO] session=1 client=127.0.0.1:64962 state=authenticated reply=250 Requested file action okay, completed
-2026-07-26 21:41:53,035 [INFO] session=1 client=127.0.0.1:64962 state=authenticated command=RMD /
-2026-07-26 21:41:53,035 [INFO] session=1 client=127.0.0.1:64962 state=authenticated fs command=RMD virtual=/
-2026-07-26 21:41:53,036 [INFO] session=1 client=127.0.0.1:64962 state=authenticated reply=550 Cannot remove the current directory, its parent, or root
-2026-07-26 21:41:53,036 [INFO] session=1 client=127.0.0.1:64962 state=authenticated command=RNFR /
-2026-07-26 21:41:53,036 [INFO] session=1 client=127.0.0.1:64962 state=authenticated fs command=RNFR virtual=/
-2026-07-26 21:41:53,036 [INFO] session=1 client=127.0.0.1:64962 state=authenticated reply=550 Cannot rename root, current directory, or its parent
-2026-07-26 21:41:53,037 [INFO] session=1 client=127.0.0.1:64962 state=authenticated command=RMD nested
-2026-07-26 21:41:53,037 [INFO] session=1 client=127.0.0.1:64962 state=authenticated fs command=RMD virtual=/
-2026-07-26 21:41:53,037 [INFO] session=1 client=127.0.0.1:64962 state=authenticated reply=550 Directory not empty
-2026-07-26 21:41:53,037 [INFO] session=1 client=127.0.0.1:64962 state=authenticated command=LIST /name with space.txt
-2026-07-26 21:41:53,038 [INFO] session=1 client=127.0.0.1:64962 state=authenticated fs command=LIST virtual=/
-2026-07-26 21:41:53,038 [INFO] session=1 client=127.0.0.1:64962 state=authenticated reply=212 End
-2026-07-26 21:41:53,038 [INFO] session=1 client=127.0.0.1:64962 state=authenticated command=QUIT
-2026-07-26 21:41:53,038 [INFO] session=1 client=127.0.0.1:64962 state=quit reply=221 Goodbye
-2026-07-26 21:41:53,039 [INFO] session=2 client=127.0.0.1:64963 state=connected connect
-2026-07-26 21:41:53,061 [INFO] session=2 client=127.0.0.1:64963 state=connected disconnect without QUIT
-2026-07-26 21:41:53,061 [INFO] shutdown complete
+2026-07-26 23:03:09,934 [INFO] server root=<server_root>
+2026-07-26 23:03:09,934 [INFO] listening host=127.0.0.1 port=50401
+2026-07-26 23:03:09,936 [INFO] session=1 client=127.0.0.1:50402 state=connected connect
+2026-07-26 23:03:09,937 [INFO] session=1 client=127.0.0.1:50402 state=connected command=USER student
+2026-07-26 23:03:09,937 [INFO] session=1 client=127.0.0.1:50402 state=pending user reply=331 User name okay, need password
+2026-07-26 23:03:09,937 [INFO] session=1 client=127.0.0.1:50402 state=pending user command=PASS <redacted>
+2026-07-26 23:03:09,937 [INFO] session=1 client=127.0.0.1:50402 state=authenticated authenticated username=student
+2026-07-26 23:03:09,937 [INFO] session=1 client=127.0.0.1:50402 state=authenticated reply=230 User logged in
+2026-07-26 23:03:09,937 [INFO] session=1 client=127.0.0.1:50402 state=authenticated command=PWD
+2026-07-26 23:03:09,937 [INFO] session=1 client=127.0.0.1:50402 state=authenticated fs command=PWD virtual=/
+2026-07-26 23:03:09,937 [INFO] session=1 client=127.0.0.1:50402 state=authenticated reply=257 "/" is current directory
+2026-07-26 23:03:09,938 [INFO] session=1 client=127.0.0.1:50402 state=authenticated command=CWD docs
+2026-07-26 23:03:09,938 [INFO] session=1 client=127.0.0.1:50402 state=authenticated fs command=CWD virtual=/docs
+2026-07-26 23:03:09,938 [INFO] session=1 client=127.0.0.1:50402 state=authenticated reply=250 Directory changed to "/docs"
+2026-07-26 23:03:09,939 [INFO] session=1 client=127.0.0.1:50402 state=authenticated command=PWD
+2026-07-26 23:03:09,939 [INFO] session=1 client=127.0.0.1:50402 state=authenticated fs command=PWD virtual=/docs
+2026-07-26 23:03:09,939 [INFO] session=1 client=127.0.0.1:50402 state=authenticated reply=257 "/docs" is current directory
+2026-07-26 23:03:09,939 [INFO] session=1 client=127.0.0.1:50402 state=authenticated command=CDUP
+2026-07-26 23:03:09,939 [INFO] session=1 client=127.0.0.1:50402 state=authenticated fs command=CDUP virtual=/
+2026-07-26 23:03:09,939 [INFO] session=1 client=127.0.0.1:50402 state=authenticated reply=250 Directory changed to "/"
+2026-07-26 23:03:09,939 [INFO] session=1 client=127.0.0.1:50402 state=authenticated command=LIST /
+2026-07-26 23:03:09,941 [INFO] session=1 client=127.0.0.1:50402 state=authenticated fs command=LIST virtual=/
+2026-07-26 23:03:09,941 [INFO] session=1 client=127.0.0.1:50402 state=authenticated reply=212 End
+2026-07-26 23:03:09,943 [INFO] session=1 client=127.0.0.1:50402 state=authenticated command=NLST /
+2026-07-26 23:03:09,943 [INFO] session=1 client=127.0.0.1:50402 state=authenticated fs command=NLST virtual=/
+2026-07-26 23:03:09,944 [INFO] session=1 client=127.0.0.1:50402 state=authenticated reply=212 End
+2026-07-26 23:03:09,944 [INFO] session=1 client=127.0.0.1:50402 state=authenticated command=STAT
+2026-07-26 23:03:09,944 [INFO] session=1 client=127.0.0.1:50402 state=authenticated fs command=STAT virtual=/
+2026-07-26 23:03:09,944 [INFO] session=1 client=127.0.0.1:50402 state=authenticated reply=212 End
+2026-07-26 23:03:09,945 [INFO] session=1 client=127.0.0.1:50402 state=authenticated command=STAT /
+2026-07-26 23:03:09,946 [INFO] session=1 client=127.0.0.1:50402 state=authenticated fs command=STAT virtual=/
+2026-07-26 23:03:09,946 [INFO] session=1 client=127.0.0.1:50402 state=authenticated reply=212 End
+2026-07-26 23:03:09,946 [INFO] session=1 client=127.0.0.1:50402 state=authenticated command=SIZE /docs/readme.txt
+2026-07-26 23:03:09,947 [INFO] session=1 client=127.0.0.1:50402 state=authenticated fs command=SIZE virtual=/
+2026-07-26 23:03:09,947 [INFO] session=1 client=127.0.0.1:50402 state=authenticated reply=213 15
+2026-07-26 23:03:09,947 [INFO] session=1 client=127.0.0.1:50402 state=authenticated command=MDTM /docs/readme.txt
+2026-07-26 23:03:09,948 [INFO] session=1 client=127.0.0.1:50402 state=authenticated fs command=MDTM virtual=/
+2026-07-26 23:03:09,948 [INFO] session=1 client=127.0.0.1:50402 state=authenticated reply=213 20260726160309
+2026-07-26 23:03:09,948 [INFO] session=1 client=127.0.0.1:50402 state=authenticated command=SIZE /docs
+2026-07-26 23:03:09,949 [INFO] session=1 client=127.0.0.1:50402 state=authenticated fs command=SIZE virtual=/
+2026-07-26 23:03:09,949 [INFO] session=1 client=127.0.0.1:50402 state=authenticated reply=550 SIZE requires a regular file
+2026-07-26 23:03:09,949 [INFO] session=1 client=127.0.0.1:50402 state=authenticated command=MKD created
+2026-07-26 23:03:09,949 [INFO] session=1 client=127.0.0.1:50402 state=authenticated fs command=MKD virtual=/
+2026-07-26 23:03:09,950 [INFO] session=1 client=127.0.0.1:50402 state=authenticated reply=257 "/created" created
+2026-07-26 23:03:09,950 [INFO] session=1 client=127.0.0.1:50402 state=authenticated command=RMD empty
+2026-07-26 23:03:09,950 [INFO] session=1 client=127.0.0.1:50402 state=authenticated fs command=RMD virtual=/
+2026-07-26 23:03:09,950 [INFO] session=1 client=127.0.0.1:50402 state=authenticated reply=250 Requested file action okay, completed
+2026-07-26 23:03:09,951 [INFO] session=1 client=127.0.0.1:50402 state=authenticated command=DELE docs
+2026-07-26 23:03:09,951 [INFO] session=1 client=127.0.0.1:50402 state=authenticated fs command=DELE virtual=/
+2026-07-26 23:03:09,951 [INFO] session=1 client=127.0.0.1:50402 state=authenticated reply=550 Target is not a regular file
+2026-07-26 23:03:09,951 [INFO] session=1 client=127.0.0.1:50402 state=authenticated command=DELE ../outside.txt
+2026-07-26 23:03:09,951 [INFO] session=1 client=127.0.0.1:50402 state=authenticated fs command=DELE virtual=/
+2026-07-26 23:03:09,951 [INFO] session=1 client=127.0.0.1:50402 state=authenticated reply=550 Path escapes server root
+2026-07-26 23:03:09,952 [INFO] session=1 client=127.0.0.1:50402 state=authenticated command=RNTO no-source.txt
+2026-07-26 23:03:09,952 [INFO] session=1 client=127.0.0.1:50402 state=authenticated fs command=RNTO virtual=/
+2026-07-26 23:03:09,952 [INFO] session=1 client=127.0.0.1:50402 state=authenticated reply=503 Bad sequence of commands
+2026-07-26 23:03:09,952 [INFO] session=1 client=127.0.0.1:50402 state=authenticated command=RNFR old.txt
+2026-07-26 23:03:09,952 [INFO] session=1 client=127.0.0.1:50402 state=authenticated fs command=RNFR virtual=/
+2026-07-26 23:03:09,952 [INFO] session=1 client=127.0.0.1:50402 state=authenticated reply=350 Requested file action pending further information
+2026-07-26 23:03:09,953 [INFO] session=1 client=127.0.0.1:50402 state=authenticated command=RNTO existing.txt
+2026-07-26 23:03:09,953 [INFO] session=1 client=127.0.0.1:50402 state=authenticated fs command=RNTO virtual=/
+2026-07-26 23:03:09,953 [INFO] session=1 client=127.0.0.1:50402 state=authenticated reply=550 Destination already exists
+2026-07-26 23:03:09,953 [INFO] session=1 client=127.0.0.1:50402 state=authenticated command=RNTO second-try.txt
+2026-07-26 23:03:09,954 [INFO] session=1 client=127.0.0.1:50402 state=authenticated fs command=RNTO virtual=/
+2026-07-26 23:03:09,954 [INFO] session=1 client=127.0.0.1:50402 state=authenticated reply=503 Bad sequence of commands
+2026-07-26 23:03:09,954 [INFO] session=1 client=127.0.0.1:50402 state=authenticated command=RNFR old.txt
+2026-07-26 23:03:09,955 [INFO] session=1 client=127.0.0.1:50402 state=authenticated fs command=RNFR virtual=/
+2026-07-26 23:03:09,955 [INFO] session=1 client=127.0.0.1:50402 state=authenticated reply=350 Requested file action pending further information
+2026-07-26 23:03:09,955 [INFO] session=1 client=127.0.0.1:50402 state=authenticated command=RNTO renamed.txt
+2026-07-26 23:03:09,956 [INFO] session=1 client=127.0.0.1:50402 state=authenticated fs command=RNTO virtual=/
+2026-07-26 23:03:09,956 [INFO] session=1 client=127.0.0.1:50402 state=authenticated reply=250 Requested file action okay, completed
+2026-07-26 23:03:09,956 [INFO] session=1 client=127.0.0.1:50402 state=authenticated command=DELE delete-me.txt
+2026-07-26 23:03:09,957 [INFO] session=1 client=127.0.0.1:50402 state=authenticated fs command=DELE virtual=/
+2026-07-26 23:03:09,957 [INFO] session=1 client=127.0.0.1:50402 state=authenticated reply=250 Requested file action okay, completed
+2026-07-26 23:03:09,957 [INFO] session=1 client=127.0.0.1:50402 state=authenticated command=RMD /
+2026-07-26 23:03:09,958 [INFO] session=1 client=127.0.0.1:50402 state=authenticated fs command=RMD virtual=/
+2026-07-26 23:03:09,958 [INFO] session=1 client=127.0.0.1:50402 state=authenticated reply=550 Cannot remove the current directory, its parent, or root
+2026-07-26 23:03:09,958 [INFO] session=1 client=127.0.0.1:50402 state=authenticated command=RNFR /
+2026-07-26 23:03:09,958 [INFO] session=1 client=127.0.0.1:50402 state=authenticated fs command=RNFR virtual=/
+2026-07-26 23:03:09,958 [INFO] session=1 client=127.0.0.1:50402 state=authenticated reply=550 Cannot rename root, current directory, or its parent
+2026-07-26 23:03:09,959 [INFO] session=1 client=127.0.0.1:50402 state=authenticated command=RMD nested
+2026-07-26 23:03:09,959 [INFO] session=1 client=127.0.0.1:50402 state=authenticated fs command=RMD virtual=/
+2026-07-26 23:03:09,959 [INFO] session=1 client=127.0.0.1:50402 state=authenticated reply=550 Directory not empty
+2026-07-26 23:03:09,960 [INFO] session=1 client=127.0.0.1:50402 state=authenticated command=LIST /name with space.txt
+2026-07-26 23:03:09,960 [INFO] session=1 client=127.0.0.1:50402 state=authenticated fs command=LIST virtual=/
+2026-07-26 23:03:09,960 [INFO] session=1 client=127.0.0.1:50402 state=authenticated reply=212 End
+2026-07-26 23:03:09,961 [INFO] session=1 client=127.0.0.1:50402 state=authenticated command=QUIT
+2026-07-26 23:03:09,961 [INFO] session=1 client=127.0.0.1:50402 state=quit reply=221 Goodbye
+2026-07-26 23:03:09,961 [INFO] session=2 client=127.0.0.1:50403 state=connected connect
+2026-07-26 23:03:09,961 [INFO] session=2 client=127.0.0.1:50403 state=connected disconnect without QUIT
+2026-07-26 23:03:09,962 [INFO] shutdown complete
