@@ -20,7 +20,7 @@ class FinalArtifactTests(unittest.TestCase):
     def test_final_evidence_has_transfer_hash_and_session_output(self):
         transcript = TRANSCRIPT.read_text(encoding="utf-8")
         log = SERVER_LOG.read_text(encoding="utf-8")
-        for required in ["150 Opening UDP data connection", "226 Transfer complete", "SHA-256 local=", "match=True", "active_sessions=1", "Final submission demo complete"]:
+        for required in ["150 Opening UDP data connection", "226 Transfer complete", "SHA-256 local=", "match=True", "active_sessions=1", "CONCURRENT SESSION CHECK", "active_sessions=2", "cwd=/client-one", "cwd=/client-two", "Final submission demo complete"]:
             self.assertIn(required, transcript)
         for required in ["rdt send", "rdt ack", "rdt window", "transfer complete"]:
             self.assertIn(required, log)
@@ -38,6 +38,10 @@ class FinalArtifactTests(unittest.TestCase):
             "## 5. Self-Assessment & Peer Evaluation",
             "## 6. GenAI Usage & Code Refinement Log",
             "## 7. Application Demo Evidence",
+            "Binary upload/download and integrity proof",
+            "Reliable-UDP control evidence",
+            "Connected-client table and isolated concurrent sessions",
+            "CONCURRENT SESSION CHECK",
             "Phan Tan Dat",
             "23125030",
         ]:

@@ -28,9 +28,20 @@ Client                                      Server
 ```
 
 `PORT h1,h2,h3,h4,p1,p2` provides the alternative active-mode endpoint. The
-server validates it against the TCP peer before using it. `ABOR` resets a
-prepared idle data channel; a future asynchronous transfer-worker refinement is
-needed before it can interrupt an in-progress control-session transfer.
+server validates it against the TCP peer before using it. A transfer runs in a
+per-session worker after its `150` reply, allowing `ABOR` to be accepted while
+the UDP state machine is active. `ABOR` signals the transfer cancellation event,
+returns an abort acknowledgement, emits RDT `ABORT` when a peer is known, and
+leaves the worker to send its terminal `426` result after temporary-file cleanup.
+
+**Active-transfer abort trace:**
+
+```text
+150 Opening UDP data connection; transfer_id=<id>
+ftp> ABOR
+226 Abort successful
+426 Connection closed; transfer aborted
+```
 
 ## 2. Project-Wide Data Structures
 
@@ -154,11 +165,51 @@ is explainable in the oral defense.
 Run `py -3 demo/final_submission_demo.py` to regenerate curated artifacts in
 `demo/evidence/final/`:
 
-- `final-transfer-transcript.txt` — authenticated binary upload/download,
-  `150`/`226`, SHA-256 equality, and a session table.
-- `final-server.log` — client/session logs plus RDT sends, ACKs, window movement,
-  retransmissions when present, and completion hashes.
+- `final-transfer-transcript.txt` — complete redacted authenticated binary
+  upload/download, SHA-256 checks, and session tables.
+- `final-server.log` — redacted client/session events plus RDT sends, ACKs,
+  window movement, and completion hashes.
 
-Automated coverage is under `tests/`: packet format, checksum rejection,
-endpoint parsing, binary transfer, TCP+UDP integration, and two-client session
-isolation. Execute `py -3 -m unittest discover -s tests -v` before a live demo.
+### Binary upload/download and integrity proof
+
+```text
+ftp> TYPE I
+200 Type set to I
+ftp> STOR evidence.bin
+150 Opening UDP data connection; transfer_id=<id>
+UDP upload bytes=4128 sha256=f2576e...715914
+226 Transfer complete; bytes=4128; sha256=f2576e...715914
+ftp> RETR evidence.bin
+150 Opening UDP data connection; transfer_id=<id>
+UDP download bytes=4128 sha256=f2576e...715914
+226 Transfer complete; bytes=4128; sha256=f2576e...715914
+SHA-256 local=f2576e...715914 server=f2576e...715914 match=True
+```
+
+### Reliable-UDP control evidence
+
+```text
+rdt send id=<id> seq=0 window=0:7
+rdt ack id=<id> ack=0 advertised_window=7
+rdt window advance id=<id> base=1
+rdt fin id=<id> seq=4 attempt=1
+transfer complete id=<id> bytes=4128 sha256=f2576e...715914 retransmissions=0
+```
+
+### Connected-client table and isolated concurrent sessions
+
+```text
+212-active_sessions=1
+212-session=<id> client=127.0.0.1:<port> auth=True cwd=/ data_mode=NONE transfer=idle bytes=4128
+
+CONCURRENT SESSION CHECK
+212-active_sessions=2
+212-session=<id> client=127.0.0.1:<port> auth=True cwd=/client-one data_mode=NONE transfer=idle bytes=0
+212-session=<id> client=127.0.0.1:<port> auth=True cwd=/client-two data_mode=NONE transfer=idle bytes=0
+```
+
+The full artifacts contain the exact command/reply order and unabridged
+redacted logs. Automated coverage is under `tests/`: packet format, checksum
+rejection, endpoint parsing, TYPE A and binary transfer, TCP+UDP integration,
+active transfer abort, and two-client session isolation. Execute
+`py -3 -m unittest discover -s tests -v` before a live demo.
